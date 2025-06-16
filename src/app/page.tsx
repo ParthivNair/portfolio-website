@@ -48,13 +48,13 @@ export default function Home() {
             }}
           >
             <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
-              John Doe
+              Parthiv Nair
             </h1>
             <h2 className="text-2xl md:text-3xl font-medium text-muted-foreground">
-              Software Engineer | Designer
+              Upcoming Software Developer
             </h2>
             <p className="text-xl text-muted-foreground max-w-[600px] mx-auto">
-              Building elegant solutions to complex problems with modern technologies.
+              Driven by Ideas. Grounded in Purpose.
             </p>
 
             <m.div
@@ -95,7 +95,7 @@ export default function Home() {
               {/* Uncomment and use your actual photo 
               <Image 
                 src="/profile.jpg" 
-                alt="John Doe" 
+                alt="Parthiv Nair" 
                 fill 
                 className="object-cover"
                 priority
