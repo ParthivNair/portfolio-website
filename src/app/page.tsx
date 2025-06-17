@@ -109,16 +109,17 @@ export default function Home() {
             <div>
               <h3 className="text-2xl font-semibold mb-2">Who I Am</h3>
               <p className="text-muted-foreground">
-                I'm a passionate software engineer and designer with over 5 years of experience creating modern web applications.
-                My expertise lies in front-end development, with a focus on creating intuitive and responsive user interfaces.
+              I’m a Computer Science student at Oregon State University who enjoys building useful things—whether that’s a smart home app, a tool to share local experiences, or a system that automates daily tasks.
+              I’ve spent time exploring different areas of tech, from backend systems and microservices to UI design and robotics.
+              Most of my projects are built around the idea of making everyday life a little easier or more connected.
               </p>
             </div>
 
             <div>
               <h3 className="text-2xl font-semibold mb-2">What I Do</h3>
               <p className="text-muted-foreground">
-                I specialize in building full-stack applications using modern technologies like React, Next.js, and Node.js.
-                I'm passionate about creating accessible, performant, and beautiful web experiences that solve real problems.
+              Outside of coding, I’m always thinking about new ideas—how tech can be more human, how to reduce unnecessary complexity, or how to make things more accessible.
+              I like working on projects that solve real problems, and I try to keep learning and improving as I go.
               </p>
             </div>
 
