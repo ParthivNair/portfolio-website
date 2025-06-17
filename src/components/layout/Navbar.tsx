@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { useState, useCallback, memo } from "react";
 import { usePathname } from "next/navigation";
 
@@ -52,37 +53,44 @@ export default function Navbar() {
                 </div>
 
                 {/* Desktop Navigation */}
-                <nav className="hidden md:flex items-center gap-6">
-                    {navItems.map((item) => (
-                        <NavLink
-                            key={item.name}
-                            item={item}
-                            isActive={pathname === item.href}
-                        />
-                    ))}
-                </nav>
+                <div className="flex items-center gap-4">
+                    <nav className="hidden md:flex items-center gap-6">
+                        {navItems.map((item) => (
+                            <NavLink
+                                key={item.name}
+                                item={item}
+                                isActive={pathname === item.href}
+                            />
+                        ))}
+                    </nav>
+                    
+                    {/* Theme Toggle */}
+                    <ThemeToggle />
+                </div>
 
                 {/* Mobile Navigation */}
-                <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-                    <SheetTrigger asChild className="md:hidden">
-                        <Button variant="ghost" size="icon" aria-label="Menu">
-                            <Menu className="h-5 w-5" />
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="right">
-                        <div className="flex flex-col gap-4 mt-8">
-                            {navItems.map((item) => (
-                                <NavLink
-                                    key={item.name}
-                                    item={item}
-                                    isActive={pathname === item.href}
-                                    isMobile={true}
-                                    onClick={handleLinkClick}
-                                />
-                            ))}
-                        </div>
-                    </SheetContent>
-                </Sheet>
+                <div className="flex items-center gap-2 md:hidden">
+                    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+                        <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon" aria-label="Menu">
+                                <Menu className="h-5 w-5" />
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="right">
+                            <div className="flex flex-col gap-4 mt-8">
+                                {navItems.map((item) => (
+                                    <NavLink
+                                        key={item.name}
+                                        item={item}
+                                        isActive={pathname === item.href}
+                                        isMobile={true}
+                                        onClick={handleLinkClick}
+                                    />
+                                ))}
+                            </div>
+                        </SheetContent>
+                    </Sheet>
+                </div>
             </div>
         </header>
     );

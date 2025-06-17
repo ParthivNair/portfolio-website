@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, MapPin, Phone, Github, Linkedin, Twitter } from "lucide-react";
+import { Mail, MapPin, Phone, Github, Linkedin, Twitter, Instagram } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
@@ -28,34 +28,34 @@ export default function ContactPage() {
                     <div className="space-y-4">
                         <div className="flex items-center gap-3">
                             <Mail className="h-5 w-5 text-muted-foreground" />
-                            <p>example@example.com</p>
+                            <p>parthivnair1@gmail.com</p>
                         </div>
                         <div className="flex items-center gap-3">
                             <Phone className="h-5 w-5 text-muted-foreground" />
-                            <p>+1 (555) 123-4567</p>
+                            <p>+1 (503) 724-4784</p>
                         </div>
                         <div className="flex items-center gap-3">
                             <MapPin className="h-5 w-5 text-muted-foreground" />
-                            <p>San Francisco, CA</p>
+                            <p>Portland, OR</p>
                         </div>
                     </div>
 
                     <div className="pt-4">
                         <h3 className="text-lg font-medium mb-3">Connect with me</h3>
                         <div className="flex gap-4">
-                            <Link href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                            <Link href="https://github.com/ParthivNair" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                                 <Button variant="outline" size="icon">
                                     <Github className="h-5 w-5" />
                                 </Button>
                             </Link>
-                            <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                            <Link href="https://www.linkedin.com/in/parthivnair/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                                 <Button variant="outline" size="icon">
                                     <Linkedin className="h-5 w-5" />
                                 </Button>
                             </Link>
-                            <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                            <Link href="https://www.instagram.com/partthivv/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                                 <Button variant="outline" size="icon">
-                                    <Twitter className="h-5 w-5" />
+                                    <Instagram className="h-5 w-5" />
                                 </Button>
                             </Link>
                         </div>
