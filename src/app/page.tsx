@@ -8,16 +8,53 @@ import { LazyMotion, domAnimation, m } from "framer-motion";
 import Image from "next/image";
 import { memo } from "react";
 
+// Featured projects data
+const featuredProjects = [
+  {
+    id: 1,
+    title: "SpaceSync",
+    description: "Smart Home Automation Platform that allows users to control lighting, temperature, and environmental routines with account-based personalization.",
+    tags: ["React", "TailwindCSS", "Firebase", "Figma", "Usability Testing"]
+  },
+  {
+    id: 2,
+    title: "Adresur",
+    description: "A home-cooked food marketplace that connects local chefs to nearby customers, eliminating third-party fees and empowering small food creators.",
+    tags: ["Next.js", "Firebase", "Stripe API", "TailwindCSS"]
+  },
+  {
+    id: 3,
+    title: "Place",
+    description: "An interactive map-based app that helps users find local hikes, restaurants, and attractions with personalized recommendations.",
+    tags: ["FastAPI", "React", "PostgreSQL", "Mapbox API", "JWT Auth"]
+  }
+];
+
 // Memoized card component to prevent unnecessary re-renders
-const ProjectCard = memo(({ index }: { index: number }) => (
-  <Card key={index} className="overflow-hidden">
+const ProjectCard = memo(({ project }: { project: typeof featuredProjects[0] }) => (
+  <Card key={project.id} className="overflow-hidden">
     <CardHeader>
-      <CardTitle>Project {index}</CardTitle>
-      <CardDescription>A brief description of project {index}</CardDescription>
+      <CardTitle>{project.title}</CardTitle>
+      <CardDescription className="line-clamp-3">{project.description}</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="h-40 bg-muted rounded-md flex items-center justify-center">
+      <div className="h-40 bg-muted rounded-md flex items-center justify-center mb-4">
         Project Preview
+      </div>
+      <div className="flex flex-wrap gap-2 items-center">
+        {project.tags.slice(0, 3).map((tag) => (
+          <span
+            key={tag}
+            className="inline-flex items-center bg-secondary text-secondary-foreground px-2 py-1 rounded-full text-xs font-medium border"
+          >
+            {tag}
+          </span>
+        ))}
+        {project.tags.length > 3 && (
+          <span className="inline-flex items-center text-xs text-muted-foreground px-2 py-1">
+            +{project.tags.length - 3} more
+          </span>
+        )}
       </div>
     </CardContent>
     <CardFooter>
@@ -51,10 +88,10 @@ export default function Home() {
               Parthiv Nair
             </h1>
             <h2 className="text-2xl md:text-3xl font-medium text-muted-foreground">
-              Upcoming Software Developer
+              Computer Science Student
             </h2>
             <p className="text-xl text-muted-foreground max-w-[600px] mx-auto">
-              Driven by Ideas. Grounded in Purpose.
+              Building useful things that make everyday life a little easier or more connected.
             </p>
 
             <m.div
@@ -109,17 +146,14 @@ export default function Home() {
             <div>
               <h3 className="text-2xl font-semibold mb-2">Who I Am</h3>
               <p className="text-muted-foreground">
-              I’m a Computer Science student at Oregon State University who enjoys building useful things—whether that’s a smart home app, a tool to share local experiences, or a system that automates daily tasks.
-              I’ve spent time exploring different areas of tech, from backend systems and microservices to UI design and robotics.
-              Most of my projects are built around the idea of making everyday life a little easier or more connected.
+                I'm a Computer Science student at Oregon State University who enjoys building useful things—whether that's a smart home app, a tool to share local experiences, or a system that automates daily tasks. I've spent time exploring different areas of tech, from backend systems and microservices to UI design and robotics.
               </p>
             </div>
 
             <div>
-              <h3 className="text-2xl font-semibold mb-2">What I Do</h3>
+              <h3 className="text-2xl font-semibold mb-2">What Drives Me</h3>
               <p className="text-muted-foreground">
-              Outside of coding, I’m always thinking about new ideas—how tech can be more human, how to reduce unnecessary complexity, or how to make things more accessible.
-              I like working on projects that solve real problems, and I try to keep learning and improving as I go.
+                Most of my projects are built around the idea of making everyday life a little easier or more connected. I'm always thinking about new ideas—how tech can be more human, how to reduce unnecessary complexity, or how to make things more accessible.
               </p>
             </div>
 
@@ -140,8 +174,8 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <ProjectCard key={i} index={i} />
+          {featuredProjects.map((project) => (
+            <ProjectCard key={project.id} project={project} />
           ))}
         </div>
 
