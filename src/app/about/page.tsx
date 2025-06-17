@@ -2,6 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { FileText } from "lucide-react";
+import { images } from "@/lib/images";
+import Image from "next/image";
 
 export const metadata = {
     title: "About | Portfolio",
@@ -44,8 +46,13 @@ export default function AboutPage() {
                         </div>
                     </div>
 
-                    <div className="h-64 bg-muted rounded-lg flex items-center justify-center">
-                        Profile Image Placeholder
+                    <div className="relative h-64 bg-muted rounded-lg overflow-hidden border-4 border-muted">
+                        <Image 
+                            src={images.profile.pfp2} 
+                            alt="Parthiv Nair" 
+                            fill 
+                            className="object-cover" 
+                        />
                     </div>
                 </div>
             </section>

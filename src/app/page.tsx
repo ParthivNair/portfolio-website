@@ -7,6 +7,8 @@ import { ArrowRight } from "lucide-react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
 import Image from "next/image";
 import { memo } from "react";
+import { images } from '@/lib/images';
+
 
 // Featured projects data
 const featuredProjects = [
@@ -127,17 +129,8 @@ export default function Home() {
           <div className="flex justify-center md:justify-start">
             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-muted">
               <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">
-                Profile Photo
+                <Image src={images.profile.pfp} alt="Parthiv Nair" fill className="object-cover" />
               </div>
-              {/* Uncomment and use your actual photo 
-              <Image 
-                src="/profile.jpg" 
-                alt="Parthiv Nair" 
-                fill 
-                className="object-cover"
-                priority
-              /> 
-              */}
             </div>
           </div>
 
