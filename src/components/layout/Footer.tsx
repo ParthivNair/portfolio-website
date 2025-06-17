@@ -10,13 +10,13 @@ export default function Footer() {
                 </p>
 
                 <div className="flex items-center gap-4">
-                    <Link href="https://github.com" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                    <Link href="https://github.com/ParthivNair" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                         <Github className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
                     </Link>
-                    <Link href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                    <Link href="https://www.linkedin.com/in/parthivnair/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                         <Linkedin className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
                     </Link>
-                    <Link href="mailto:example@example.com" aria-label="Email">
+                    <Link href="mailto:parthivnair1@gmail.com" aria-label="Email">
                         <Mail className="h-5 w-5 text-muted-foreground hover:text-foreground transition-colors" />
                     </Link>
                 </div>
