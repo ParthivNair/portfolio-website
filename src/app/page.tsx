@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { TypingEffect } from "@/components/ui/typing-effect";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { LazyMotion, domAnimation, m } from "framer-motion";
@@ -9,6 +10,15 @@ import Image from "next/image";
 import { memo } from "react";
 import { images } from '@/lib/images';
 
+
+// Catchphrases for typing effect
+const catchphrases = [
+  "Building useful things that make everyday life a little easier or more connected.",
+  "Creating solutions that bridge the gap between technology and human needs.",
+  "Developing apps and systems that solve real-world problems.",
+  "Crafting digital experiences that bring people together.",
+  "Turning ideas into tools that make a difference."
+];
 
 // Featured projects data
 const featuredProjects = [
@@ -92,8 +102,15 @@ export default function Home() {
             <h2 className="text-2xl md:text-3xl font-medium text-muted-foreground">
               Computer Science Student
             </h2>
-            <p className="text-xl text-muted-foreground max-w-[600px] mx-auto">
-              Building useful things that make everyday life a little easier or more connected.
+            <p className="text-xl text-muted-foreground max-w-[600px] mx-auto min-h-[3.5rem] flex items-center justify-center">
+              <TypingEffect 
+                phrases={catchphrases}
+                typingSpeed={80}
+                deletingSpeed={40}
+                pauseTime={2500}
+                errorChance={0.4}
+                className="text-center"
+              />
             </p>
 
             <m.div
