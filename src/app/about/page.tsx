@@ -63,9 +63,9 @@ export default function AboutPage() {
                     {[
                         "React", "Next.js", "TypeScript", "TailwindCSS", 
                         "Firebase", "FastAPI", "Python", "PostgreSQL", 
-                        "MongoDB", "Docker", "Microservices", "API Development",
-                        "UI/UX Design", "Figma", "JWT Auth", "Stripe API",
-                        "OpenAI API", "FFmpeg", "Mapbox API"
+                        "MongoDB", "Docker", "Microservices", "OpenStreetMap API",
+                        "UI/UX Design", "Figma", "JWT Auth",
+                        "OpenAI API", "FFmpeg"
                     ].map((skill) => (
                         <Card key={skill} className="bg-muted/50">
                             <CardContent className="p-4">
@@ -84,7 +84,7 @@ export default function AboutPage() {
                             <div className="space-y-2">
                                 <div className="flex justify-between items-start">
                                     <h3 className="font-semibold">Computer Science Student</h3>
-                                    <span className="text-sm text-muted-foreground">Current</span>
+                                    <span className="text-sm text-muted-foreground">2022-Present</span>
                                 </div>
                                 <p className="text-muted-foreground">Oregon State University</p>
                                 <p className="text-sm text-muted-foreground">
