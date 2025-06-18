@@ -3,12 +3,8 @@
  * Place all images in the public/img folder and reference them here
  */
 
-// Base path for images - handles GitHub Pages basePath
-const getBasePath = () => {
-  return process.env.NODE_ENV === 'production' ? '/portfolio-website' : '';
-};
-
-const IMG_BASE_PATH = `${getBasePath()}/img`;
+// Base path for images - simplified for custom domain
+const IMG_BASE_PATH = '/img';
 
 // Profile images
 export const profileImages = {
