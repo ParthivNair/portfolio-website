@@ -25,7 +25,7 @@ export default function AboutPage() {
                     <div className="space-y-4">
                         <h2 className="text-2xl font-semibold">Who I Am</h2>
                         <p className="text-muted-foreground">
-                            I'm a Computer Science student at Oregon State University who enjoys building useful things—whether that's a smart home app, a tool to share local experiences, or a system that automates daily tasks. I've spent time exploring different areas of tech, from backend systems and microservices to UI design and robotics.
+                            I&apos;m a Computer Science student at Oregon State University who enjoys building useful things—whether that&apos;s a smart home app, a tool to share local experiences, or a system that automates daily tasks. I&apos;ve spent time exploring different areas of tech, from backend systems and microservices to UI design and robotics.
                         </p>
                         <p className="text-muted-foreground">
                             Most of my projects are built around the idea of making everyday life a little easier or more connected.
@@ -33,7 +33,7 @@ export default function AboutPage() {
 
                         <h2 className="text-2xl font-semibold pt-4">What Drives Me</h2>
                         <p className="text-muted-foreground">
-                            Outside of coding, I'm always thinking about new ideas—how tech can be more human, how to reduce unnecessary complexity, or how to make things more accessible. I like working on projects that solve real problems, and I try to keep learning and improving as I go.
+                            Outside of coding, I&apos;m always thinking about new ideas—how tech can be more human, how to reduce unnecessary complexity, or how to make things more accessible. I like working on projects that solve real problems, and I try to keep learning and improving as I go.
                         </p>
 
                         <div className="pt-4">

@@ -156,14 +156,14 @@ export default function Home() {
             <div>
               <h3 className="text-2xl font-semibold mb-2">Who I Am</h3>
               <p className="text-muted-foreground">
-                I'm a Computer Science student at Oregon State University who enjoys building useful things—whether that's a smart home app, a tool to share local experiences, or a system that automates daily tasks. I've spent time exploring different areas of tech, from backend systems and microservices to UI design and robotics.
+                I&apos;m a Computer Science student at Oregon State University who enjoys building useful things—whether that&apos;s a smart home app, a tool to share local experiences, or a system that automates daily tasks. I&apos;ve spent time exploring different areas of tech, from backend systems and microservices to UI design and robotics.
               </p>
             </div>
 
             <div>
               <h3 className="text-2xl font-semibold mb-2">What Drives Me</h3>
               <p className="text-muted-foreground">
-                Most of my projects are built around the idea of making everyday life a little easier or more connected. I'm always thinking about new ideas—how tech can be more human, how to reduce unnecessary complexity, or how to make things more accessible.
+                Most of my projects are built around the idea of making everyday life a little easier or more connected. I&apos;m always thinking about new ideas—how tech can be more human, how to reduce unnecessary complexity, or how to make things more accessible.
               </p>
             </div>
 

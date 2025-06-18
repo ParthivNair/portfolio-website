@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, MapPin, Phone, Github, Linkedin, Twitter, Instagram } from "lucide-react";
+import { Mail, MapPin, Phone, Github, Linkedin, Instagram } from "lucide-react";
 import Link from "next/link";
 
 export const metadata = {
@@ -21,7 +21,7 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="space-y-6">
                     <p className="text-muted-foreground">
-                        I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+                        I&apos;m always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
                         Feel free to reach out through the contact form or via my social media profiles.
                     </p>
 

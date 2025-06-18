@@ -49,7 +49,7 @@ export default function Navbar() {
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8 mx-auto">
                 <div className="flex items-center gap-2">
-                    <Link href="/" className="font-bold text-xl">Portfolio</Link>
+                    <Link href="/" className="font-bold text-xl">Parthiv Nair</Link>
                 </div>
 
                 {/* Desktop Navigation */}

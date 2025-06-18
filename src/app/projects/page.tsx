@@ -4,9 +4,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ExternalLink, Github } from "lucide-react";
-import { motion, LazyMotion, domAnimation, m } from "framer-motion";
+import { LazyMotion, domAnimation, m } from "framer-motion";
 import { useProjectStore, Project } from "@/lib/store";
-import { useEffect, useState, useMemo, memo } from "react";
+import { useEffect, useState, memo } from "react";
 import ClientOnly from "@/components/ClientOnly";
 
 // Real projects from docs/projects.md
@@ -125,7 +125,7 @@ const ProjectCard = memo(({ project, index }: { project: Project; index: number 
 ProjectCard.displayName = "ProjectCard";
 
 function ProjectsContent() {
-    const { projects, setProjects } = useProjectStore();
+    const { setProjects } = useProjectStore();
     const [displayProjects, setDisplayProjects] = useState<Project[]>([]);
     const [loading, setLoading] = useState(true);
 

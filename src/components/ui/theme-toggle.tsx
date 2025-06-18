@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, TreePine, Palette } from 'lucide-react';
+import { Sun, Moon, TreePine } from 'lucide-react';
 import { Button } from './button';
 import { useTheme, type Theme } from '@/lib/theme-context';
 import { useState, useRef, useEffect } from 'react';
