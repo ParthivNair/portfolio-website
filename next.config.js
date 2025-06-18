@@ -2,11 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
-  basePath: '/portfolio-website',
-  assetPrefix: '/portfolio-website',
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
-  distDir: 'out',
+  distDir: 'docs',
   images: {
     unoptimized: true,
     formats: ['image/avif', 'image/webp'],
