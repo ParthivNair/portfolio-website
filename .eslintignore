@@ -1,0 +1,10 @@
+# Generated build directories
+docs/
+out/
+.next/
+
+# Dependencies
+node_modules/
+
+# Other generated files
+*.tsbuildinfo 
