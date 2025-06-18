@@ -20,15 +20,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Initialize theme from localStorage or default to 'earth'
   useEffect(() => {
     setMounted(true);
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme && ['earth', 'light', 'dark'].includes(savedTheme)) {
-      setThemeState(savedTheme);
+    
+    // Only access localStorage in the browser
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem('theme') as Theme;
+      if (savedTheme && ['earth', 'light', 'dark'].includes(savedTheme)) {
+        setThemeState(savedTheme);
+      }
     }
   }, []);
 
   // Apply theme to document
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || typeof window === 'undefined') return;
 
     const root = document.documentElement;
     

@@ -2,6 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
+  basePath: '/portfolio-website',
+  assetPrefix: '/portfolio-website',
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   distDir: 'out',
