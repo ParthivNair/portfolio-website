@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Parthiv Nair - CS Student & Robotics Leader | Oregon State University",
+    default: "Parthiv Nair - CS @ Oregon State University",
     template: "%s | Parthiv Nair - Developer Portfolio"
   },
   description: "Computer Science student at Oregon State University specializing in AI navigation systems, robotics leadership, and full-stack development. Former robotics team captain with expertise in autonomous systems and innovative web applications.",
