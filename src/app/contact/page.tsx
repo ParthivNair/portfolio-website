@@ -73,12 +73,6 @@ export default function ContactPage() {
                                 </a>
                             </div>
                             <div className="flex items-center gap-3">
-                                <Phone className="h-5 w-5 text-muted-foreground" />
-                                <a href="tel:+15037244784" className="hover:text-primary transition-colors">
-                                    +1 (503) 724-4784
-                                </a>
-                            </div>
-                            <div className="flex items-center gap-3">
                                 <MapPin className="h-5 w-5 text-muted-foreground" />
                                 <p>Portland, Oregon - Open to remote opportunities</p>
                             </div>
