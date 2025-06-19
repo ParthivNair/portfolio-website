@@ -10,28 +10,28 @@ import Image from "next/image";
 import { memo } from "react";
 import { images } from '@/lib/images';
 
-// Catchphrases for typing effect - optimized for SEO keywords
+// Catchphrases for typing effect
 const catchphrases = [
-  "Building AI navigation systems for smart vehicles and autonomous robotics.",
-  "Creating innovative web applications that solve real-world problems.",
+  "Building innovative web applications that solve real-world problems.",
   "Developing full-stack solutions with React, Next.js, and modern technologies.",
-  "Leading robotics teams and building autonomous systems at Oregon State University.",
-  "Turning startup ideas into scalable tech solutions that reduce corporate complexity."
+  "Creating smart home automation and community-focused platforms.",
+  "Exploring autonomous systems and intelligent software solutions.",
+  "Turning startup ideas into scalable tech solutions."
 ];
 
-// Featured projects data with SEO-optimized descriptions
+// Featured projects data
 const featuredProjects = [
   {
     id: 1,
     title: "SpaceSync - Smart Home Automation",
-    description: "AI-powered smart home automation platform with personalized environmental controls, developed using React and Firebase for seamless IoT integration.",
+    description: "Comprehensive smart home platform with personalized environmental controls, developed using React and Firebase for seamless IoT integration.",
     tags: ["React", "TailwindCSS", "Firebase", "IoT", "Smart Home"],
     imageAlt: "SpaceSync smart home automation dashboard showing temperature and lighting controls"
   },
   {
     id: 2,
     title: "Adresur - Local Food Marketplace",
-    description: "Revolutionary food marketplace connecting local chefs with customers, eliminating third-party fees through innovative Next.js and Stripe integration.",
+    description: "Food marketplace connecting local chefs with customers, eliminating third-party fees through innovative Next.js and Stripe integration.",
     tags: ["Next.js", "Firebase", "Stripe API", "E-commerce", "Local Business"],
     imageAlt: "Adresur food marketplace interface showing local chef listings and ordering system"
   },
@@ -126,10 +126,10 @@ export default function Home() {
               }}
             >
               <Button asChild size="lg">
-                <Link href="/projects">View AI & Robotics Projects</Link>
+                <Link href="/projects">View My Projects</Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link href="/contact">Contact Developer</Link>
+                <Link href="/contact">Get In Touch</Link>
               </Button>
             </m.div>
           </m.div>
@@ -139,7 +139,7 @@ export default function Home() {
       {/* About Me Section */}
       <section className="py-12" role="main">
         <div className="space-y-4 mb-8">
-          <h2 className="text-3xl font-bold tracking-tight text-center md:text-left">About Parthiv Nair - Oregon State CS Student</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-center md:text-left">About Me</h2>
           <div className="w-20 h-1 bg-primary mx-auto md:mx-0"></div>
         </div>
 
@@ -149,7 +149,7 @@ export default function Home() {
             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-muted">
               <Image 
                 src={images.profile.pfp} 
-                alt="Parthiv Nair - Oregon State University Computer Science student and former robotics team captain specializing in AI navigation systems" 
+                alt="Parthiv Nair - Computer Science student and developer" 
                 fill 
                 className="object-cover"
                 priority
@@ -160,22 +160,22 @@ export default function Home() {
           {/* Text - Right on desktop, bottom on mobile */}
           <div className="space-y-6">
             <div>
-              <h3 className="text-2xl font-semibold mb-2">Dreams & Innovations</h3>
+              <h3 className="text-2xl font-semibold mb-2">Student & Developer</h3>
               <p className="text-muted-foreground">
-                As a third-year Computer Science student at Oregon State University and former robotics captain, I’m passionate about autonomous systems and AI navigation technologies. My expertise spans full-stack development, smart home automation, and innovative web applications that solve real-world challenges.
+                I'm a third-year Computer Science student at Oregon State University with experience in team leadership and full-stack development. My passion lies in creating innovative web applications that solve real-world problems and make technology more accessible.
               </p>
             </div>
 
             <div>
-              <h3 className="text-2xl font-semibold mb-2">Building Technology for Social Impact</h3>
+              <h3 className="text-2xl font-semibold mb-2">Building for Impact</h3>
               <p className="text-muted-foreground">
-                My projects focus on reducing corporate complexity and improving everyday systems through technology. From developing property management systems to creating geolocation-based activity explorers, I&apos;m passionate about entrepreneurship and building solutions that make technology more human-centered and accessible.
+                My projects focus on reducing complexity and improving everyday systems through technology. From smart home automation to community platforms, I enjoy building solutions that bridge the gap between technology and human needs.
               </p>
             </div>
 
             <div className="pt-4">
               <Button asChild>
-                <Link href="/about">Learn More About My Experience</Link>
+                <Link href="/about">Learn More About My Journey</Link>
               </Button>
             </div>
           </div>
@@ -185,8 +185,8 @@ export default function Home() {
       {/* Featured Projects */}
       <section className="space-y-8 py-12" role="complementary">
         <div className="flex flex-col gap-2 text-center md:text-left">
-          <h2 className="text-3xl font-bold tracking-tight">Featured Development Projects</h2>
-          <p className="text-muted-foreground">Explore my latest work in AI navigation, robotics, and full-stack development</p>
+          <h2 className="text-3xl font-bold tracking-tight">Featured Projects</h2>
+          <p className="text-muted-foreground">Explore my latest work in web development and innovative applications</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -197,7 +197,7 @@ export default function Home() {
 
         <div className="flex justify-center mt-8">
           <Button variant="outline" asChild>
-            <Link href="/projects">View All Development Projects</Link>
+            <Link href="/projects">View All Projects</Link>
           </Button>
         </div>
       </section>

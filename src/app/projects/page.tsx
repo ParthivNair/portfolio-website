@@ -9,12 +9,12 @@ import { useProjectStore, Project } from "@/lib/store";
 import { useEffect, useState, memo } from "react";
 import ClientOnly from "@/components/ClientOnly";
 
-// Real projects with SEO-optimized descriptions
+// Real projects with cleaned descriptions
 const realProjects = [
     {
         id: "spacesync",
         title: "SpaceSync - Smart Home Automation Platform",
-        description: "Comprehensive IoT smart home platform enabling users to control lighting, temperature, and environmental routines with AI-powered automation and account-based personalization. Built with React, Firebase, and modern IoT integration.",
+        description: "Comprehensive IoT smart home platform enabling users to control lighting, temperature, and environmental routines with intelligent automation and account-based personalization. Built with React, Firebase, and modern IoT integration.",
         image: "/placeholder.jpg",
         tags: ["React", "TailwindCSS", "Firebase", "IoT", "Smart Home", "Automation"],
         demoUrl: "#",
@@ -25,7 +25,7 @@ const realProjects = [
     {
         id: "adresur",
         title: "Adresur - Local Food Marketplace",
-        description: "Revolutionary home-cooked food marketplace connecting local chefs with nearby customers, eliminating third-party delivery fees and empowering small food creators through direct community connections and Stripe payment integration.",
+        description: "Home-cooked food marketplace connecting local chefs with nearby customers, eliminating third-party delivery fees and empowering small food creators through direct community connections and Stripe payment integration.",
         image: "/placeholder.jpg",
         tags: ["Next.js", "Firebase", "Stripe API", "E-commerce", "Local Business", "Community"],
         demoUrl: "#",
@@ -57,14 +57,14 @@ const realProjects = [
     },
     {
         id: "content-generator",
-        title: "AI Voiceover Content Generator",
-        description: "AI-powered content creation tool generating social media voiceovers and automated subtitles for content creators, utilizing OpenAI API and FFmpeg for video processing with plans to evolve into a custom video platform.",
+        title: "AI Content Generator",
+        description: "Content creation tool generating social media voiceovers and automated subtitles for content creators, utilizing OpenAI API and FFmpeg for video processing with plans to evolve into a comprehensive content platform.",
         image: "/placeholder.jpg",
         tags: ["Python", "FFmpeg", "OpenAI API", "React", "MongoDB", "AI Content"],
         demoUrl: "#",
         githubUrl: "#",
         createdAt: 1682812800000,
-        imageAlt: "Content generator interface showing AI voiceover creation and subtitle generation tools"
+        imageAlt: "Content generator interface showing voiceover creation and subtitle generation tools"
     },
 ];
 
@@ -152,12 +152,12 @@ function ProjectsContent() {
     return (
         <div className="container py-12 space-y-8">
             <header className="space-y-2">
-                <h1 className="text-4xl font-bold tracking-tight">Development Projects Portfolio</h1>
+                <h1 className="text-4xl font-bold tracking-tight">My Projects</h1>
                 <p className="text-xl text-muted-foreground">
-                    Explore innovative projects in AI navigation, robotics, smart home automation, and full-stack development
+                    Explore innovative projects in web development, smart home automation, and community platforms
                 </p>
                 <div className="text-sm text-muted-foreground pt-2">
-                    <p>Featuring expertise in React, Next.js, Python, AI systems, and autonomous robotics from Oregon State CS student</p>
+                    <p>Featuring expertise in React, Next.js, Python, and modern web technologies</p>
                 </div>
             </header>
 

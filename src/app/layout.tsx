@@ -15,24 +15,22 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Parthiv Nair - CS @ Oregon State University",
-    template: "%s | Parthiv Nair - Developer Portfolio"
+    default: "Parthiv Nair - CS Student & Developer",
+    template: "%s | Parthiv Nair"
   },
-  description: "Computer Science student at Oregon State University specializing in AI navigation systems, robotics leadership, and full-stack development. Former robotics team captain with expertise in autonomous systems and innovative web applications.",
+  description: "Computer Science student at Oregon State University with experience in team leadership and full-stack development. Building innovative web applications and exploring autonomous systems.",
   keywords: [
-    "Computer Science student Oregon State",
-    "robotics team captain",
-    "AI navigation systems",
-    "autonomous systems developer",
-    "full-stack developer portfolio",
+    "Parthiv Nair",
+    "Computer Science student",
+    "full-stack developer",
     "React Next.js developer",
-    "CS student robotics leadership",
-    "Oregon State University CS",
     "web application developer",
-    "startup founder tech",
-    "property management system developer",
-    "geolocation app developer",
-    "voiceover content generator"
+    "Oregon State University",
+    "software engineering",
+    "startup founder",
+    "property management system",
+    "geolocation apps",
+    "smart home automation"
   ],
   authors: [{ name: "Parthiv Nair" }],
   creator: "Parthiv Nair",
@@ -50,22 +48,22 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://parthivnair.dev',
-    title: 'Parthiv Nair - CS Student & Robotics Leader | Oregon State University',
-    description: 'Computer Science student at Oregon State University specializing in AI navigation systems, robotics leadership, and full-stack development. View my portfolio of innovative web applications and startup projects.',
+    title: 'Parthiv Nair - CS Student & Developer',
+    description: 'Computer Science student at Oregon State University building innovative web applications and exploring autonomous systems. View my portfolio of projects and startup ideas.',
     siteName: 'Parthiv Nair Portfolio',
     images: [
       {
         url: '/img/profile/pfp.jpg',
         width: 1200,
         height: 630,
-        alt: 'Parthiv Nair - Oregon State CS student and robotics team captain',
+        alt: 'Parthiv Nair - Computer Science student and developer',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Parthiv Nair - CS Student & Robotics Leader',
-    description: 'Computer Science student at Oregon State University specializing in AI navigation systems and full-stack development.',
+    title: 'Parthiv Nair - CS Student & Developer',
+    description: 'Computer Science student building innovative web applications and exploring technology solutions.',
     images: ['/img/profile/pfp.jpg'],
   },
   robots: {
@@ -118,7 +116,7 @@ export default function RootLayout({
               "@type": "Person",
               "name": "Parthiv Nair",
               "jobTitle": "Computer Science Student",
-              "description": "CS student at Oregon State University, former robotics team captain specializing in AI navigation systems and full-stack development",
+              "description": "CS student and developer with experience in team leadership and full-stack development",
               "url": "https://parthivnair.dev",
               "sameAs": [
                 "https://github.com/ParthivNair",
@@ -131,13 +129,13 @@ export default function RootLayout({
               },
               "knowsAbout": [
                 "Computer Science",
-                "Robotics",
-                "AI Navigation Systems", 
                 "Full-Stack Development",
                 "React",
                 "Next.js",
                 "Python",
-                "Autonomous Systems"
+                "Web Applications",
+                "Software Engineering",
+                "Team Leadership"
               ],
               "image": "https://parthivnair.dev/img/profile/pfp.jpg"
             })

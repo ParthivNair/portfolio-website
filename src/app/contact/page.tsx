@@ -5,23 +5,22 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Contact Parthiv Nair - CS Student & Developer",
-    description: "Get in touch with Parthiv Nair, Computer Science student at Oregon State University specializing in AI navigation systems, robotics, and full-stack development. Available for collaboration, internships, and project inquiries.",
+    title: "Contact Parthiv Nair",
+    description: "Get in touch with Parthiv Nair, Computer Science student and developer. Available for collaboration, internships, and project opportunities.",
     keywords: [
         "contact Parthiv Nair",
-        "Oregon State CS student contact",
-        "robotics developer hire",
-        "AI navigation systems developer",
-        "full-stack developer Portland",
-        "CS student collaboration",
-        "robotics team captain contact",
-        "React Next.js developer hire",
-        "smart home automation developer",
-        "startup tech founder contact"
+        "CS student contact",
+        "developer hire",
+        "full-stack developer",
+        "Portland Oregon",
+        "collaboration opportunities",
+        "React developer",
+        "web development",
+        "software engineering"
     ],
     openGraph: {
-        title: "Contact Parthiv Nair - CS Student & Developer",
-        description: "Connect with Parthiv Nair for collaboration opportunities in AI navigation, robotics, and innovative web development projects.",
+        title: "Contact Parthiv Nair",
+        description: "Connect with Parthiv Nair for collaboration opportunities and innovative web development projects.",
     },
 };
 
@@ -29,9 +28,9 @@ export default function ContactPage() {
     return (
         <div className="container py-12 space-y-8">
             <header className="space-y-2">
-                <h1 className="text-4xl font-bold tracking-tight">Contact Parthiv Nair</h1>
+                <h1 className="text-4xl font-bold tracking-tight">Contact Me</h1>
                 <p className="text-xl text-muted-foreground">
-                    Connect with an Oregon State CS student specializing in AI navigation and robotics
+                    Let's connect and explore opportunities to work together
                 </p>
                 <div className="text-sm text-muted-foreground pt-2">
                     <p>Available for internships, collaborations, and innovative project opportunities</p>
@@ -41,12 +40,12 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <section className="space-y-6" role="main">
                     <div>
-                        <h2 className="text-2xl font-semibold mb-4">Let&apos;s Build Something Amazing Together</h2>
+                        <h2 className="text-2xl font-semibold mb-4">Let's Build Something Great</h2>
                         <p className="text-muted-foreground mb-4">
-                            I&apos;m always excited to discuss new projects, innovative ideas, and opportunities to collaborate on cutting-edge technology solutions. Whether you&apos;re interested in AI navigation systems, robotics applications, or full-stack development projects, I&apos;d love to hear from you.
+                            I'm always excited to discuss new projects, innovative ideas, and opportunities to collaborate on cutting-edge technology solutions. Whether you're interested in web development, smart home automation, or community platforms, I'd love to hear from you.
                         </p>
                         <p className="text-muted-foreground">
-                            As a Computer Science student with leadership experience in robotics and a passion for entrepreneurship, I&apos;m particularly interested in projects that reduce corporate complexity and improve everyday systems through technology.
+                            As a Computer Science student with leadership experience and a passion for entrepreneurship, I'm particularly interested in projects that reduce complexity and improve everyday systems through technology.
                         </p>
                     </div>
 
@@ -73,19 +72,19 @@ export default function ContactPage() {
                     </div>
 
                     <div className="pt-4">
-                        <h3 className="text-lg font-medium mb-3">Professional Profiles</h3>
+                        <h3 className="text-lg font-medium mb-3">Connect Online</h3>
                         <div className="flex gap-4">
-                            <Link href="https://github.com/ParthivNair" target="_blank" rel="noopener noreferrer" aria-label="GitHub - View Parthiv's code repositories and open source contributions">
+                            <Link href="https://github.com/ParthivNair" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                                 <Button variant="outline" size="icon">
                                     <Github className="h-5 w-5" />
                                 </Button>
                             </Link>
-                            <Link href="https://www.linkedin.com/in/parthivnair/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn - Connect with Parthiv professionally">
+                            <Link href="https://www.linkedin.com/in/parthivnair/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                                 <Button variant="outline" size="icon">
                                     <Linkedin className="h-5 w-5" />
                                 </Button>
                             </Link>
-                            <Link href="https://www.instagram.com/partthivv/" target="_blank" rel="noopener noreferrer" aria-label="Instagram - Follow Parthiv's projects and updates">
+                            <Link href="https://www.instagram.com/partthivv/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                                 <Button variant="outline" size="icon">
                                     <Instagram className="h-5 w-5" />
                                 </Button>
@@ -166,24 +165,12 @@ export default function ContactPage() {
             </div>
 
             <section className="pt-8 border-t">
-                <h2 className="text-2xl font-semibold mb-4">Areas of Interest & Collaboration</h2>
+                <h2 className="text-2xl font-semibold mb-4">Areas of Interest</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <Card className="p-4">
-                        <h3 className="font-semibold mb-2">AI Navigation Systems</h3>
-                        <p className="text-sm text-muted-foreground">
-                            Smart vehicle navigation, autonomous robotics, and intelligent pathfinding algorithms
-                        </p>
-                    </Card>
                     <Card className="p-4">
                         <h3 className="font-semibold mb-2">Full-Stack Development</h3>
                         <p className="text-sm text-muted-foreground">
                             React, Next.js, Python, and modern web application development with scalable architecture
-                        </p>
-                    </Card>
-                    <Card className="p-4">
-                        <h3 className="font-semibold mb-2">Startup & Entrepreneurship</h3>
-                        <p className="text-sm text-muted-foreground">
-                            Building innovative solutions that reduce corporate complexity and improve everyday systems
                         </p>
                     </Card>
                     <Card className="p-4">
@@ -199,9 +186,21 @@ export default function ContactPage() {
                         </p>
                     </Card>
                     <Card className="p-4">
+                        <h3 className="font-semibold mb-2">Startup & Entrepreneurship</h3>
+                        <p className="text-sm text-muted-foreground">
+                            Building innovative solutions that reduce complexity and improve everyday systems
+                        </p>
+                    </Card>
+                    <Card className="p-4">
+                        <h3 className="font-semibold mb-2">System Architecture</h3>
+                        <p className="text-sm text-muted-foreground">
+                            Microservices, API design, and scalable backend systems for modern applications
+                        </p>
+                    </Card>
+                    <Card className="p-4">
                         <h3 className="font-semibold mb-2">Internship Opportunities</h3>
                         <p className="text-sm text-muted-foreground">
-                            Seeking summer 2024 internships in software development, AI research, or robotics
+                            Seeking summer 2024 internships in software development, web engineering, or tech startups
                         </p>
                     </Card>
                 </div>
