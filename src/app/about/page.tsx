@@ -43,7 +43,7 @@ export default function AboutPage() {
                     <div className="space-y-4">
                         <h2 className="text-2xl font-semibold">Robotics Leadership & Academic Excellence</h2>
                         <p className="text-muted-foreground">
-                            As a third-year Computer Science student at Oregon State University, I bring unique leadership experience as the former captain of robotics team 12599 Overcharged. My expertise in autonomous systems and AI navigation technologies stems from hands-on experience building and programming competitive robots for complex challenges.
+                            As a third-year Computer Science student at Oregon State University, I bring unique leadership experience as the former captain of a robotics team (Overcharged). My expertise in autonomous systems and AI navigation technologies stems from hands-on experience building and programming competitive robots for complex challenges.
                         </p>
                         <p className="text-muted-foreground">
                             My academic journey combines theoretical computer science knowledge with practical application in robotics, full-stack development, and innovative problem-solving approaches that bridge technology and human needs.

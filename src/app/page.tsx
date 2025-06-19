@@ -160,7 +160,7 @@ export default function Home() {
           {/* Text - Right on desktop, bottom on mobile */}
           <div className="space-y-6">
             <div>
-              <h3 className="text-2xl font-semibold mb-2">Robotics Leadership & AI Innovation</h3>
+              <h3 className="text-2xl font-semibold mb-2">Dreams & Innovations</h3>
               <p className="text-muted-foreground">
                 As a third-year Computer Science student at Oregon State University and former robotics captain, I’m passionate about autonomous systems and AI navigation technologies. My expertise spans full-stack development, smart home automation, and innovative web applications that solve real-world challenges.
               </p>
