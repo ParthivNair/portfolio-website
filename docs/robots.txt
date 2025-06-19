@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Sitemap location (optional - you can add this if you have a sitemap)
-# Sitemap: https://yourdomain.com/sitemap.xml 
+# Sitemap: https://parthivnair.com/sitemap.xml 
