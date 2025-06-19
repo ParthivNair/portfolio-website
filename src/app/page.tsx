@@ -10,35 +10,37 @@ import Image from "next/image";
 import { memo } from "react";
 import { images } from '@/lib/images';
 
-
-// Catchphrases for typing effect
+// Catchphrases for typing effect - optimized for SEO keywords
 const catchphrases = [
-  "Building useful things that make everyday life a little easier or more connected.",
-  "Creating solutions that bridge the gap between technology and human needs.",
-  "Developing apps and systems that solve real-world problems.",
-  "Crafting digital experiences that bring people together.",
-  "Turning ideas into tools that make a difference."
+  "Building AI navigation systems for smart vehicles and autonomous robotics.",
+  "Creating innovative web applications that solve real-world problems.",
+  "Developing full-stack solutions with React, Next.js, and modern technologies.",
+  "Leading robotics teams and building autonomous systems at Oregon State University.",
+  "Turning startup ideas into scalable tech solutions that reduce corporate complexity."
 ];
 
-// Featured projects data
+// Featured projects data with SEO-optimized descriptions
 const featuredProjects = [
   {
     id: 1,
-    title: "SpaceSync",
-    description: "Smart Home Automation Platform that allows users to control lighting, temperature, and environmental routines with account-based personalization.",
-    tags: ["React", "TailwindCSS", "Firebase", "Figma", "Usability Testing"]
+    title: "SpaceSync - Smart Home Automation",
+    description: "AI-powered smart home automation platform with personalized environmental controls, developed using React and Firebase for seamless IoT integration.",
+    tags: ["React", "TailwindCSS", "Firebase", "IoT", "Smart Home"],
+    imageAlt: "SpaceSync smart home automation dashboard showing temperature and lighting controls"
   },
   {
     id: 2,
-    title: "Adresur",
-    description: "A home-cooked food marketplace that connects local chefs to nearby customers, eliminating third-party fees and empowering small food creators.",
-    tags: ["Next.js", "Firebase", "Stripe API", "TailwindCSS"]
+    title: "Adresur - Local Food Marketplace",
+    description: "Revolutionary food marketplace connecting local chefs with customers, eliminating third-party fees through innovative Next.js and Stripe integration.",
+    tags: ["Next.js", "Firebase", "Stripe API", "E-commerce", "Local Business"],
+    imageAlt: "Adresur food marketplace interface showing local chef listings and ordering system"
   },
   {
     id: 3,
-    title: "Place",
-    description: "An interactive map-based app that helps users find local hikes, restaurants, and attractions with personalized recommendations.",
-    tags: ["FastAPI", "React", "PostgreSQL", "Mapbox API", "JWT Auth"]
+    title: "Place - Geolocation Activity Explorer",
+    description: "Interactive map-based application for discovering local attractions using advanced geolocation APIs and personalized recommendation algorithms.",
+    tags: ["FastAPI", "React", "PostgreSQL", "Mapbox API", "Geolocation"],
+    imageAlt: "Place app showing interactive map with local hiking trails and restaurant recommendations"
   }
 ];
 
@@ -46,12 +48,12 @@ const featuredProjects = [
 const ProjectCard = memo(({ project }: { project: typeof featuredProjects[0] }) => (
   <Card key={project.id} className="overflow-hidden">
     <CardHeader>
-      <CardTitle>{project.title}</CardTitle>
+      <CardTitle className="text-lg">{project.title}</CardTitle>
       <CardDescription className="line-clamp-3">{project.description}</CardDescription>
     </CardHeader>
     <CardContent>
-      <div className="h-40 bg-muted rounded-md flex items-center justify-center mb-4">
-        Project Preview
+      <div className="h-40 bg-muted rounded-md flex items-center justify-center mb-4" role="img" aria-label={project.imageAlt}>
+        <span className="text-muted-foreground text-sm">Project Preview</span>
       </div>
       <div className="flex flex-wrap gap-2 items-center">
         {project.tags.slice(0, 3).map((tag) => (
@@ -86,7 +88,7 @@ export default function Home() {
     <div className="container space-y-24 py-12 md:py-16">
       {/* Hero Section with Animation */}
       <LazyMotion features={domAnimation}>
-        <section className="flex flex-col items-center text-center space-y-6 py-16 md:py-24">
+        <section className="flex flex-col items-center text-center space-y-6 py-16 md:py-24" role="banner">
           <m.div
             className="space-y-6"
             initial={{ opacity: 0, y: 20 }}
@@ -100,9 +102,9 @@ export default function Home() {
               Parthiv Nair
             </h1>
             <h2 className="text-2xl md:text-3xl font-medium text-muted-foreground">
-              Computer Science Student
+              CS Student & Robotics Team Captain | Oregon State University
             </h2>
-            <p className="text-xl text-muted-foreground max-w-[600px] mx-auto min-h-[3.5rem] flex items-center justify-center">
+            <div className="text-xl text-muted-foreground max-w-[600px] mx-auto min-h-[3.5rem] flex items-center justify-center">
               <TypingEffect 
                 phrases={catchphrases}
                 typingSpeed={80}
@@ -111,7 +113,7 @@ export default function Home() {
                 errorChance={0.4}
                 className="text-center"
               />
-            </p>
+            </div>
 
             <m.div
               className="flex flex-col sm:flex-row gap-4 mt-8 justify-center"
@@ -124,10 +126,10 @@ export default function Home() {
               }}
             >
               <Button asChild size="lg">
-                <Link href="/projects">View Projects</Link>
+                <Link href="/projects">View AI & Robotics Projects</Link>
               </Button>
               <Button variant="outline" size="lg" asChild>
-                <Link href="/contact">Contact Me</Link>
+                <Link href="/contact">Contact Developer</Link>
               </Button>
             </m.div>
           </m.div>
@@ -135,9 +137,9 @@ export default function Home() {
       </LazyMotion>
 
       {/* About Me Section */}
-      <section className="py-12">
+      <section className="py-12" role="main">
         <div className="space-y-4 mb-8">
-          <h2 className="text-3xl font-bold tracking-tight text-center md:text-left">About Me</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-center md:text-left">About Parthiv Nair - Oregon State CS Student</h2>
           <div className="w-20 h-1 bg-primary mx-auto md:mx-0"></div>
         </div>
 
@@ -145,31 +147,35 @@ export default function Home() {
           {/* Photo - Left on desktop, top on mobile */}
           <div className="flex justify-center md:justify-start">
             <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-muted">
-              <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">
-                <Image src={images.profile.pfp} alt="Parthiv Nair" fill className="object-cover" />
-              </div>
+              <Image 
+                src={images.profile.pfp} 
+                alt="Parthiv Nair - Oregon State University Computer Science student and former robotics team captain specializing in AI navigation systems" 
+                fill 
+                className="object-cover"
+                priority
+              />
             </div>
           </div>
 
           {/* Text - Right on desktop, bottom on mobile */}
           <div className="space-y-6">
             <div>
-              <h3 className="text-2xl font-semibold mb-2">Who I Am</h3>
+              <h3 className="text-2xl font-semibold mb-2">Robotics Leadership & AI Innovation</h3>
               <p className="text-muted-foreground">
-                I&apos;m a Computer Science student at Oregon State University who enjoys building useful things—whether that&apos;s a smart home app, a tool to share local experiences, or a system that automates daily tasks. I&apos;ve spent time exploring different areas of tech, from backend systems and microservices to UI design and robotics.
+                As a third-year Computer Science student at Oregon State University and former captain of robotics team 12599 Overcharged, I specialize in autonomous systems and AI navigation technologies. My expertise spans full-stack development, smart home automation, and innovative web applications that solve real-world challenges.
               </p>
             </div>
 
             <div>
-              <h3 className="text-2xl font-semibold mb-2">What Drives Me</h3>
+              <h3 className="text-2xl font-semibold mb-2">Building Technology for Social Impact</h3>
               <p className="text-muted-foreground">
-                Most of my projects are built around the idea of making everyday life a little easier or more connected. I&apos;m always thinking about new ideas—how tech can be more human, how to reduce unnecessary complexity, or how to make things more accessible.
+                My projects focus on reducing corporate complexity and improving everyday systems through technology. From developing property management systems to creating geolocation-based activity explorers, I&apos;m passionate about entrepreneurship and building solutions that make technology more human-centered and accessible.
               </p>
             </div>
 
             <div className="pt-4">
               <Button asChild>
-                <Link href="/about">More About Me</Link>
+                <Link href="/about">Learn More About My Experience</Link>
               </Button>
             </div>
           </div>
@@ -177,10 +183,10 @@ export default function Home() {
       </section>
 
       {/* Featured Projects */}
-      <section className="space-y-8 py-12">
+      <section className="space-y-8 py-12" role="complementary">
         <div className="flex flex-col gap-2 text-center md:text-left">
-          <h2 className="text-3xl font-bold tracking-tight">Featured Projects</h2>
-          <p className="text-muted-foreground">Check out some of my recent work</p>
+          <h2 className="text-3xl font-bold tracking-tight">Featured Development Projects</h2>
+          <p className="text-muted-foreground">Explore my latest work in AI navigation, robotics, and full-stack development</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -191,7 +197,7 @@ export default function Home() {
 
         <div className="flex justify-center mt-8">
           <Button variant="outline" asChild>
-            <Link href="/projects">View All Projects</Link>
+            <Link href="/projects">View All Development Projects</Link>
           </Button>
         </div>
       </section>

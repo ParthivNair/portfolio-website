@@ -10,6 +10,7 @@ export interface Project {
     demoUrl: string;
     githubUrl: string;
     createdAt: number;
+    imageAlt?: string;
 }
 
 interface ProjectStore {

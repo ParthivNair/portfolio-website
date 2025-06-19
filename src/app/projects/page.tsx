@@ -9,57 +9,62 @@ import { useProjectStore, Project } from "@/lib/store";
 import { useEffect, useState, memo } from "react";
 import ClientOnly from "@/components/ClientOnly";
 
-// Real projects from docs/projects.md
+// Real projects with SEO-optimized descriptions
 const realProjects = [
     {
         id: "spacesync",
-        title: "SpaceSync",
-        description: "Smart Home Automation Platform that allows users to control lighting, temperature, and environmental routines with account-based personalization.",
+        title: "SpaceSync - Smart Home Automation Platform",
+        description: "Comprehensive IoT smart home platform enabling users to control lighting, temperature, and environmental routines with AI-powered automation and account-based personalization. Built with React, Firebase, and modern IoT integration.",
         image: "/placeholder.jpg",
-        tags: ["React", "TailwindCSS", "Firebase", "Figma", "Usability Testing"],
+        tags: ["React", "TailwindCSS", "Firebase", "IoT", "Smart Home", "Automation"],
         demoUrl: "#",
         githubUrl: "#",
         createdAt: 1672531200000,
+        imageAlt: "SpaceSync smart home dashboard showing automated lighting and temperature controls"
     },
     {
         id: "adresur",
-        title: "Adresur",
-        description: "A home-cooked food marketplace that connects local chefs to nearby customers, eliminating third-party fees and empowering small food creators.",
+        title: "Adresur - Local Food Marketplace",
+        description: "Revolutionary home-cooked food marketplace connecting local chefs with nearby customers, eliminating third-party delivery fees and empowering small food creators through direct community connections and Stripe payment integration.",
         image: "/placeholder.jpg",
-        tags: ["Next.js", "Firebase", "Stripe API", "TailwindCSS"],
+        tags: ["Next.js", "Firebase", "Stripe API", "E-commerce", "Local Business", "Community"],
         demoUrl: "#",
         githubUrl: "#",
         createdAt: 1675209600000,
+        imageAlt: "Adresur marketplace interface showing local chef profiles and food ordering system"
     },
     {
         id: "place",
-        title: "Place",
-        description: "An interactive map-based app that helps users find local hikes, restaurants, and attractions with personalized recommendations.",
+        title: "Place - Geolocation Activity Explorer",
+        description: "Interactive map-based application helping users discover local hiking trails, restaurants, and attractions through advanced geolocation APIs, personalized recommendation algorithms, and community-driven content curation.",
         image: "/placeholder.jpg",
-        tags: ["FastAPI", "React", "PostgreSQL", "Mapbox API", "JWT Auth"],
+        tags: ["FastAPI", "React", "PostgreSQL", "Mapbox API", "Geolocation", "Recommendations"],
         demoUrl: "#",
         githubUrl: "#",
         createdAt: 1677628800000,
+        imageAlt: "Place app displaying interactive map with hiking trails and restaurant recommendations"
     },
     {
         id: "property-management",
         title: "Property Management System",
-        description: "A tool to help landlords and tenants manage listings, payments, and maintenance requests. Built using a modular microservice architecture.",
+        description: "Comprehensive property management platform for landlords and tenants featuring listing management, automated payment processing, maintenance request tracking, and tenant communication tools built with microservices architecture.",
         image: "/placeholder.jpg",
-        tags: ["FastAPI", "React", "MongoDB", "Docker", "Microservices"],
+        tags: ["FastAPI", "React", "MongoDB", "Docker", "Microservices", "Property Management"],
         demoUrl: "#",
         githubUrl: "#",
         createdAt: 1680220800000,
+        imageAlt: "Property management dashboard showing rental listings and maintenance request interface"
     },
     {
         id: "content-generator",
-        title: "Content Generator",
-        description: "AI-powered tool that creates social media voiceovers and subtitles for creators, with plans to evolve into a custom video platform.",
+        title: "AI Voiceover Content Generator",
+        description: "AI-powered content creation tool generating social media voiceovers and automated subtitles for content creators, utilizing OpenAI API and FFmpeg for video processing with plans to evolve into a custom video platform.",
         image: "/placeholder.jpg",
-        tags: ["Python", "FFmpeg", "OpenAI API", "React", "MongoDB"],
+        tags: ["Python", "FFmpeg", "OpenAI API", "React", "MongoDB", "AI Content"],
         demoUrl: "#",
         githubUrl: "#",
         createdAt: 1682812800000,
+        imageAlt: "Content generator interface showing AI voiceover creation and subtitle generation tools"
     },
 ];
 
@@ -89,7 +94,7 @@ const ProjectCard = memo(({ project, index }: { project: Project; index: number 
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="flex-1 space-y-4">
-                    <div className="h-40 bg-muted rounded-lg flex items-center justify-center border">
+                    <div className="h-40 bg-muted rounded-lg flex items-center justify-center border" role="img" aria-label={project.imageAlt || `${project.title} project preview`}>
                         <span className="text-muted-foreground text-sm">Project Preview</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
@@ -146,19 +151,22 @@ function ProjectsContent() {
 
     return (
         <div className="container py-12 space-y-8">
-            <div className="space-y-2">
-                <h1 className="text-4xl font-bold tracking-tight">Projects</h1>
+            <header className="space-y-2">
+                <h1 className="text-4xl font-bold tracking-tight">Development Projects Portfolio</h1>
                 <p className="text-xl text-muted-foreground">
-                    Explore my projects that make everyday life a little easier or more connected
+                    Explore innovative projects in AI navigation, robotics, smart home automation, and full-stack development
                 </p>
-            </div>
+                <div className="text-sm text-muted-foreground pt-2">
+                    <p>Featuring expertise in React, Next.js, Python, AI systems, and autonomous robotics from Oregon State CS student</p>
+                </div>
+            </header>
 
             <LazyMotion features={domAnimation}>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="main">
                     {displayProjects.map((project, index) => (
                         <ProjectCard key={project.id} project={project} index={index} />
                     ))}
-                </div>
+                </main>
             </LazyMotion>
         </div>
     );
