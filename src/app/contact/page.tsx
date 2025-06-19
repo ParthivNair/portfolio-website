@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, MapPin, Phone, Github, Linkedin, Instagram } from "lucide-react";
+import { Mail, MapPin, Github, Linkedin, Instagram } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 
