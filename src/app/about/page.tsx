@@ -50,14 +50,14 @@ export default function AboutPage() {
 
                         <h2 className="text-2xl font-semibold pt-4">Innovation & Entrepreneurship</h2>
                         <p className="text-muted-foreground">
-                            I'm passionate about creating technologies that reduce complexity and improve everyday systems. From developing property management platforms to building community-focused applications, I focus on solutions that make technology more accessible and human-centered.
+                            I&apos;m passionate about creating technologies that reduce complexity and improve everyday systems. From developing property management platforms to building community-focused applications, I focus on solutions that make technology more accessible and human-centered.
                         </p>
 
                         <div className="pt-4">
                             <Button asChild>
                                 <Link href="/contact" className="flex items-center gap-2">
                                     <FileText className="h-4 w-4" />
-                                    Let's Connect
+                                    Let&apos;s Connect
                                 </Link>
                             </Button>
                         </div>

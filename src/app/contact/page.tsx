@@ -30,7 +30,7 @@ export default function ContactPage() {
             <header className="space-y-2">
                 <h1 className="text-4xl font-bold tracking-tight">Contact Me</h1>
                 <p className="text-xl text-muted-foreground">
-                    Let's connect and explore opportunities to work together
+                    Let&apos;s connect and explore opportunities to work together
                 </p>
                 <div className="text-sm text-muted-foreground pt-2">
                     <p>Available for internships, collaborations, and innovative project opportunities</p>
@@ -40,12 +40,12 @@ export default function ContactPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <section className="space-y-6" role="main">
                     <div>
-                        <h2 className="text-2xl font-semibold mb-4">Let's Build Something Great</h2>
+                        <h2 className="text-2xl font-semibold mb-4">Let&apos;s Build Something Great</h2>
                         <p className="text-muted-foreground mb-4">
-                            I'm always excited to discuss new projects, innovative ideas, and opportunities to collaborate on cutting-edge technology solutions. Whether you're interested in web development, smart home automation, or community platforms, I'd love to hear from you.
+                            I&apos;m always excited to discuss new projects, innovative ideas, and opportunities to collaborate on cutting-edge technology solutions. Whether you&apos;re interested in web development, smart home automation, or community platforms, I&apos;d love to hear from you.
                         </p>
                         <p className="text-muted-foreground">
-                            As a Computer Science student with leadership experience and a passion for entrepreneurship, I'm particularly interested in projects that reduce complexity and improve everyday systems through technology.
+                            As a Computer Science student with leadership experience and a passion for entrepreneurship, I&apos;m particularly interested in projects that reduce complexity and improve everyday systems through technology.
                         </p>
                     </div>
 

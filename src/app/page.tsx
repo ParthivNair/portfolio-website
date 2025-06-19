@@ -162,7 +162,7 @@ export default function Home() {
             <div>
               <h3 className="text-2xl font-semibold mb-2">Student & Developer</h3>
               <p className="text-muted-foreground">
-                I'm a third-year Computer Science student at Oregon State University with experience in team leadership and full-stack development. My passion lies in creating innovative web applications that solve real-world problems and make technology more accessible.
+                I&apos;m a third-year Computer Science student at Oregon State University with experience in team leadership and full-stack development. My passion lies in creating innovative web applications that solve real-world problems and make technology more accessible.
               </p>
             </div>
 
