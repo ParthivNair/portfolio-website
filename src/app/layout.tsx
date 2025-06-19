@@ -40,14 +40,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://parthivnair.dev'),
+  metadataBase: new URL('https://www.parthivnair.com'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://parthivnair.dev',
+    url: 'https://www.parthivnair.com',
     title: 'Parthiv Nair - CS Student & Developer',
     description: 'Computer Science student at Oregon State University building innovative web applications and exploring autonomous systems. View my portfolio of projects and startup ideas.',
     siteName: 'Parthiv Nair Portfolio',
@@ -78,7 +78,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: 'your-google-verification-code',
+    google: 'google-site-verification-code-here', // Replace with your actual Google Search Console verification code
   },
 };
 
@@ -117,7 +117,7 @@ export default function RootLayout({
               "name": "Parthiv Nair",
               "jobTitle": "Computer Science Student",
               "description": "CS student and developer with experience in team leadership and full-stack development",
-              "url": "https://parthivnair.dev",
+              "url": "https://www.parthivnair.com",
               "sameAs": [
                 "https://github.com/ParthivNair",
                 "https://www.linkedin.com/in/parthivnair/",
@@ -137,7 +137,7 @@ export default function RootLayout({
                 "Software Engineering",
                 "Team Leadership"
               ],
-              "image": "https://parthivnair.dev/img/profile/pfp.jpg"
+              "image": "https://www.parthivnair.com/img/profile/pfp.jpg"
             })
           }}
         />

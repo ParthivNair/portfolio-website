@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
 
-# Sitemap location (optional - you can add this if you have a sitemap)
-# Sitemap: https://parthivnair.com/sitemap.xml 
+# Sitemap location
+Sitemap: https://www.parthivnair.com/sitemap.xml 

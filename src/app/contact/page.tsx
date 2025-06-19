@@ -6,7 +6,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "Contact Parthiv Nair",
-    description: "Get in touch with Parthiv Nair, Computer Science student and developer. Available for collaboration, internships, and project opportunities.",
+    description: "Get in touch with Parthiv Nair, Computer Science student and developer. Available for collaboration, internships, and project opportunities. Located in Portland, Oregon and open to remote work.",
     keywords: [
         "contact Parthiv Nair",
         "CS student contact",
@@ -16,11 +16,25 @@ export const metadata: Metadata = {
         "collaboration opportunities",
         "React developer",
         "web development",
-        "software engineering"
+        "software engineering",
+        "internship opportunities",
+        "remote work",
+        "freelance developer"
     ],
+    alternates: {
+        canonical: '/contact',
+    },
     openGraph: {
-        title: "Contact Parthiv Nair",
-        description: "Connect with Parthiv Nair for collaboration opportunities and innovative web development projects.",
+        title: "Contact Parthiv Nair - CS Student & Developer",
+        description: "Connect with Parthiv Nair for collaboration opportunities and innovative web development projects. Available for internships and remote work.",
+        url: 'https://www.parthivnair.com/contact',
+        images: ['/img/profile/pfp.jpg'],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Contact Parthiv Nair - CS Student & Developer',
+        description: 'Connect with Parthiv Nair for collaboration opportunities and innovative web development projects.',
+        images: ['/img/profile/pfp.jpg'],
     },
 };
 

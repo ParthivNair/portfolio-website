@@ -201,6 +201,110 @@ export default function Home() {
           </Button>
         </div>
       </section>
+
+      {/* SEO-friendly Skills and Technologies Section */}
+      <section className="space-y-8 py-12" role="complementary">
+        <div className="text-center space-y-4">
+          <h2 className="text-3xl font-bold tracking-tight">Technologies & Expertise</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Specializing in modern web development with a focus on scalable, user-centered solutions
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">Frontend Development</h3>
+            <p className="text-muted-foreground text-sm">
+              Building responsive, accessible web applications with React, Next.js, TypeScript, and modern CSS frameworks like TailwindCSS. Focus on performance optimization and user experience.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {["React", "Next.js", "TypeScript", "TailwindCSS", "JavaScript"].map((tech) => (
+                <span key={tech} className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full border">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">Backend & Database</h3>
+            <p className="text-muted-foreground text-sm">
+              Developing scalable server-side applications with Python, FastAPI, and modern database solutions. Experience with both SQL and NoSQL databases for optimal data management.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {["Python", "FastAPI", "PostgreSQL", "MongoDB", "Firebase", "Docker"].map((tech) => (
+                <span key={tech} className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full border">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">Specialized Areas</h3>
+            <p className="text-muted-foreground text-sm">
+              IoT integration, geolocation services, payment processing, and AI-powered content generation. Building innovative solutions for smart home automation and community platforms.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {["IoT", "Mapbox API", "Stripe API", "OpenAI API", "Microservices", "System Design"].map((tech) => (
+                <span key={tech} className="text-xs bg-secondary text-secondary-foreground px-2 py-1 rounded-full border">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Professional Focus Areas */}
+      <section className="space-y-8 py-12 bg-muted/30 rounded-lg px-8">
+        <div className="text-center space-y-4">
+          <h2 className="text-3xl font-bold tracking-tight">Professional Focus</h2>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Committed to building technology solutions that reduce complexity and improve everyday systems
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">Innovation & Entrepreneurship</h3>
+            <p className="text-muted-foreground">
+              Passionate about turning innovative ideas into scalable technology solutions. Experience in startup environments, 
+              developing property management systems, local marketplaces, and smart home platforms that address real-world challenges.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">Team Leadership & Collaboration</h3>
+            <p className="text-muted-foreground">
+              Proven leadership experience as team captain, managing complex technical projects and coordinating development efforts. 
+              Strong communication skills and experience working in collaborative environments to deliver high-quality software solutions.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">Full-Stack Development</h3>
+            <p className="text-muted-foreground">
+              End-to-end web application development from concept to deployment. Expertise in modern development practices including 
+              responsive design, API integration, database optimization, and cloud deployment for scalable applications.
+            </p>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-semibold">Continuous Learning</h3>
+            <p className="text-muted-foreground">
+              Currently pursuing Computer Science degree at Oregon State University while actively building projects and staying 
+              current with emerging technologies. Always exploring new frameworks, tools, and methodologies to improve development efficiency.
+            </p>
+          </div>
+        </div>
+
+        <div className="text-center pt-8">
+          <Button asChild size="lg">
+            <Link href="/contact">Let&apos;s Build Something Together</Link>
+          </Button>
+        </div>
+      </section>
     </div>
   );
 }

@@ -8,7 +8,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
     title: "About Parthiv Nair",
-    description: "Learn about Parthiv Nair, a Computer Science student at Oregon State University with experience in team leadership and full-stack development. Passionate about creating innovative solutions.",
+    description: "Learn about Parthiv Nair, a Computer Science student at Oregon State University with experience in team leadership and full-stack development. Passionate about creating innovative solutions that reduce complexity and improve everyday systems.",
     keywords: [
         "Parthiv Nair about",
         "Computer Science student",
@@ -18,11 +18,24 @@ export const metadata: Metadata = {
         "web development",
         "software engineering",
         "smart home automation",
-        "startup projects"
+        "startup projects",
+        "React developer",
+        "Next.js developer",
+        "Python developer"
     ],
+    alternates: {
+        canonical: '/about',
+    },
     openGraph: {
-        title: "About Parthiv Nair",
-        description: "Computer Science student with experience in team leadership and innovative web development.",
+        title: "About Parthiv Nair - CS Student & Developer",
+        description: "Computer Science student with experience in team leadership and innovative web development. Building solutions that reduce complexity and improve everyday systems.",
+        url: 'https://www.parthivnair.com/about',
+        images: ['/img/profile/about_pfp.jpg'],
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'About Parthiv Nair - CS Student & Developer',
+        description: 'Computer Science student with experience in team leadership and innovative web development.',
         images: ['/img/profile/about_pfp.jpg'],
     },
 };
