@@ -102,7 +102,7 @@ export default function Home() {
               Parthiv Nair
             </h1>
             <h2 className="text-2xl md:text-3xl font-medium text-muted-foreground">
-              CS Student & Robotics Team Captain | Oregon State University
+              CS Student | Oregon State University
             </h2>
             <div className="text-xl text-muted-foreground max-w-[600px] mx-auto min-h-[3.5rem] flex items-center justify-center">
               <TypingEffect 
