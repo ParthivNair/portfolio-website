@@ -52,9 +52,44 @@
   --color-earth-border: #B8A082;
 }
 
-/* Earth Mode (Default) */
+/* Dark Mode (Default) */
 :root {
   --radius: 0.625rem;
+  --background: #111827; /* Dark background */
+  --foreground: oklch(0.985 0.001 106.423); /* Light text */
+  --card: #1f2937;
+  --card-foreground: oklch(0.985 0.001 106.423);
+  --popover: #1f2937;
+  --popover-foreground: oklch(0.985 0.001 106.423);
+  --primary: #c084fc; /* Lavender accent */
+  --primary-foreground: #111827;
+  --secondary: #374151;
+  --secondary-foreground: oklch(0.985 0.001 106.423);
+  --muted: #374151;
+  --muted-foreground: oklch(0.709 0.01 56.259);
+  --accent: #c084fc;
+  --accent-foreground: #111827;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: #374151;
+  --ring: #c084fc;
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: #1f2937;
+  --sidebar-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-primary: #c084fc;
+  --sidebar-primary-foreground: #111827;
+  --sidebar-accent: #374151;
+  --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: #c084fc;
+}
+
+/* Earth Mode */
+.earth {
   --background: #5E503F; /* Light brown background */
   --foreground: #FFFFFF; /* White text */
   --card: #594d3c; /* Slightly lighter brown for cards */
@@ -123,7 +158,7 @@
   --sidebar-ring: #6366f1;
 }
 
-/* Dark Mode */
+/* Dark Mode (explicit class for consistency) */
 .dark {
   --background: #111827; /* Dark background */
   --foreground: oklch(0.985 0.001 106.423); /* Light text */

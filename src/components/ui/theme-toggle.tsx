@@ -7,6 +7,12 @@ import { useTheme, type Theme } from '@/lib/theme-context';
 import { useState, useRef, useEffect } from 'react';
 
 const themeConfig = {
+  dark: {
+    icon: Moon,
+    label: 'Dark Mode',
+    description: 'Easy on the eyes',
+    color: '#c084fc',
+  },
   earth: {
     icon: TreePine,
     label: 'Earth Mode',
@@ -18,12 +24,6 @@ const themeConfig = {
     label: 'Light Mode',
     description: 'Clean and bright',
     color: '#6366f1',
-  },
-  dark: {
-    icon: Moon,
-    label: 'Dark Mode',
-    description: 'Easy on the eyes',
-    color: '#c084fc',
   },
 };
 
@@ -68,7 +68,7 @@ export function ThemeToggle() {
         className="relative overflow-hidden opacity-50"
         aria-label="Loading theme toggle"
       >
-        <TreePine className="h-4 w-4" />
+        <Moon className="h-4 w-4" />
       </Button>
     );
   }

@@ -14,10 +14,10 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('earth');
+  const [theme, setThemeState] = useState<Theme>('dark');
   const [mounted, setMounted] = useState(false);
 
-  // Initialize theme from localStorage or default to 'earth'
+  // Initialize theme from localStorage or default to 'dark'
   useEffect(() => {
     setMounted(true);
     
@@ -39,10 +39,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Remove all theme classes
     root.classList.remove('earth', 'light', 'dark');
     
-    // Add current theme class (except for earth which is default)
-    if (theme !== 'earth') {
-      root.classList.add(theme);
-    }
+    // Add current theme class (dark is now default, so we add classes for all themes)
+    root.classList.add(theme);
     
     // Save to localStorage
     localStorage.setItem('theme', theme);
@@ -53,7 +51,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const toggleTheme = () => {
-    const themes: Theme[] = ['earth', 'light', 'dark'];
+    const themes: Theme[] = ['dark', 'earth', 'light'];
     const currentIndex = themes.indexOf(theme);
     const nextIndex = (currentIndex + 1) % themes.length;
     setTheme(themes[nextIndex]);
