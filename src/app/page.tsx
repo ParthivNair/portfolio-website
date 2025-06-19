@@ -162,7 +162,7 @@ export default function Home() {
             <div>
               <h3 className="text-2xl font-semibold mb-2">Robotics Leadership & AI Innovation</h3>
               <p className="text-muted-foreground">
-                As a third-year Computer Science student at Oregon State University and former captain of robotics team 12599 Overcharged, I specialize in autonomous systems and AI navigation technologies. My expertise spans full-stack development, smart home automation, and innovative web applications that solve real-world challenges.
+                As a third-year Computer Science student at Oregon State University and former robotics captain, I’m passionate about autonomous systems and AI navigation technologies. My expertise spans full-stack development, smart home automation, and innovative web applications that solve real-world challenges.
               </p>
             </div>
 
