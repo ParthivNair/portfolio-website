@@ -35,13 +35,13 @@ export default function AboutPage() {
                 <div className="space-y-2">
                     <h1 className="text-4xl font-bold tracking-tight">About Parthiv Nair - Oregon State CS Student</h1>
                     <p className="text-xl text-muted-foreground">
-                        Robotics team captain turned full-stack developer specializing in AI navigation systems
+                    Full-stack developer building systems that prioritize impact, accessibility, and meaningful change.
                     </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
-                        <h2 className="text-2xl font-semibold">Robotics Leadership & Academic Excellence</h2>
+                        <h2 className="text-2xl font-semibold">Leadership & Excellence</h2>
                         <p className="text-muted-foreground">
                             As a third-year Computer Science student at Oregon State University, I bring unique leadership experience as the former captain of a robotics team (Overcharged). My expertise in autonomous systems and AI navigation technologies stems from hands-on experience building and programming competitive robots for complex challenges.
                         </p>
