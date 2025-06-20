@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Mail, MapPin, Github, Linkedin, Instagram } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
+import ContactForm from "@/components/ContactForm";
 
 export const metadata: Metadata = {
     title: "Contact Parthiv Nair",
@@ -101,75 +102,7 @@ export default function ContactPage() {
                     </div>
                 </section>
 
-                <Card role="complementary">
-                    <CardHeader>
-                        <CardTitle>Send a Message</CardTitle>
-                        <CardDescription>
-                            Reach out for collaboration opportunities, project inquiries, or just to connect
-                        </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <form className="space-y-4" action="#" method="POST">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <label htmlFor="name" className="text-sm font-medium">
-                                        Name *
-                                    </label>
-                                    <input
-                                        id="name"
-                                        name="name"
-                                        type="text"
-                                        required
-                                        className="w-full p-2 rounded-md border border-input bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
-                                        placeholder="Your name"
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label htmlFor="email" className="text-sm font-medium">
-                                        Email *
-                                    </label>
-                                    <input
-                                        id="email"
-                                        name="email"
-                                        type="email"
-                                        required
-                                        className="w-full p-2 rounded-md border border-input bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
-                                        placeholder="Your email"
-                                    />
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <label htmlFor="subject" className="text-sm font-medium">
-                                    Subject *
-                                </label>
-                                <input
-                                    id="subject"
-                                    name="subject"
-                                    type="text"
-                                    required
-                                    className="w-full p-2 rounded-md border border-input bg-background focus:ring-2 focus:ring-primary focus:border-transparent"
-                                    placeholder="Project collaboration, internship opportunity, etc."
-                                />
-                            </div>
-                            <div className="space-y-2">
-                                <label htmlFor="message" className="text-sm font-medium">
-                                    Message *
-                                </label>
-                                <textarea
-                                    id="message"
-                                    name="message"
-                                    rows={5}
-                                    required
-                                    className="w-full p-2 rounded-md border border-input bg-background resize-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                                    placeholder="Tell me about your project, opportunity, or how we can collaborate..."
-                                ></textarea>
-                            </div>
-                            <Button type="submit" className="w-full">
-                                Send Message
-                            </Button>
-                        </form>
-                    </CardContent>
-                </Card>
+                <ContactForm />
             </div>
 
             <section className="pt-8 border-t">

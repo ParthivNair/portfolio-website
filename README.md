@@ -1,6 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio Website
+
+A modern, responsive portfolio website with a Next.js frontend and FastAPI backend.
+
+## Architecture
+
+- **Frontend**: Next.js 14 + TypeScript + Tailwind CSS (deployed to GitHub Pages)
+- **Backend**: FastAPI + Python (deployed to Vercel)
+
+## Repository Structure
+
+```
+portfolio-website/
+├── src/                 # Next.js frontend
+├── backend/            # FastAPI backend
+├── docs/              # GitHub Pages build output
+└── public/            # Static assets
+```
 
 ## Getting Started
+
+### Frontend Development
 
 First, run the development server:
 
@@ -16,9 +35,29 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Backend Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To run the FastAPI backend locally:
+
+```bash
+cd backend
+pip install -r requirements.txt
+python dev.py
+```
+
+The API will be available at [http://localhost:8000](http://localhost:8000) with interactive docs at [http://localhost:8000/docs](http://localhost:8000/docs).
+
+## Deployment
+
+- **Frontend**: Automatically deployed to GitHub Pages via GitHub Actions
+- **Backend**: Deploy to Vercel by connecting the repository and setting root directory to `backend/`
+
+## Contact Form Integration
+
+The contact form in the frontend sends requests to the FastAPI backend:
+
+- **Production**: `https://api.parthivnair.com/api/contact`
+- **Development**: `http://localhost:8000/api/contact`
 
 ## Learn More
 
