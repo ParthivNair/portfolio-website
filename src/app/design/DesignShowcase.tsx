@@ -21,7 +21,7 @@ function Model({ url, scale = 1 }: { url: string; scale?: number }) {
 function Scene({ modelUrl, scale }: { modelUrl: string; scale?: number }) {
   return (
     <Canvas
-      camera={{ position: [0, 0, 0.1], fov: 50 }}
+      camera={{ position: [0, 0, 0.5], fov: 50 }}
       style={{ height: '400px' }}
       gl={{ 
         antialias: true, 
@@ -102,15 +102,15 @@ function ModelCard({
 export default function DesignShowcase() {
   const models = [
     {
-      title: 'Overcharged Robot',
+      title: '2021',
       modelUrl: '/optimized/OverchargedUG.glb',
-      description: 'Advanced robotics design featuring innovative engineering solutions and competitive-grade components.',
+      description: 'Ring shooter robot featuring a six wheel drive, for the Ultimate Goal season.',
       scale: 1,
     },
     {
-      title: 'World 5th Rank',
+      title: '2022',
       modelUrl: '/optimized/OverchargedFF.glb',
-      description: 'Championship-winning robot design that achieved 5th place in world competition rankings.',
+      description: 'My greatest and highest performing robot design, for the Freight Frenzy season, achieving 5th place in the world in quals rankings (we did not make worlds lol).',
       scale: 1,
     },
   ];
