@@ -39,6 +39,7 @@ next-env.d.ts
 # Large model files (original versions)
 # Only commit optimized versions to avoid GitHub size limits
 public/models/
+docs/models/
 models-backup/
 
 # Keep optimized models (these are small enough for GitHub)
