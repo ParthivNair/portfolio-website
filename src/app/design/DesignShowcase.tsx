@@ -18,10 +18,10 @@ function Model({ url, scale = 1 }: { url: string; scale?: number }) {
 }
 
 // 3D Scene component
-function Scene({ modelUrl, scale }: { modelUrl: string; scale?: number }) {
+function Scene({ modelUrl, scale, cameraPosition = [0, 0, 0.5] }: { modelUrl: string; scale?: number; cameraPosition?: [number, number, number] }) {
   return (
     <Canvas
-      camera={{ position: [0, 0, 0.5], fov: 50 }}
+      camera={{ position: cameraPosition, fov: 50 }}
       style={{ height: '400px' }}
       gl={{ 
         antialias: true, 
@@ -63,12 +63,14 @@ function ModelCard({
   title, 
   modelUrl, 
   description, 
-  scale = 1 
+  scale = 1,
+  cameraPosition = [0, 0, 0.5]
 }: { 
   title: string; 
   modelUrl: string; 
   description: string;
   scale?: number;
+  cameraPosition?: [number, number, number];
 }) {
   return (
     <Card className="w-full h-full">
@@ -86,7 +88,7 @@ function ModelCard({
                 </div>
               </div>
             }>
-              <Scene modelUrl={modelUrl} scale={scale} />
+              <Scene modelUrl={modelUrl} scale={scale} cameraPosition={cameraPosition} />
             </Suspense>
           </ErrorBoundary>
         </div>
@@ -106,12 +108,14 @@ export default function DesignShowcase() {
       modelUrl: '/optimized/OverchargedUG.glb',
       description: 'Ring shooter robot featuring a six wheel drive, for the Ultimate Goal season.',
       scale: 1,
+      cameraPosition: [0, 0, 0.8] as [number, number, number],
     },
     {
       title: '2022',
       modelUrl: '/optimized/OverchargedFF.glb',
-      description: 'My greatest and highest performing robot design, for the Freight Frenzy season, achieving 5th place in the world in quals rankings (we did not make worlds lol).',
+      description: 'My greatest and highest performing robot design, for the Freight Frenzy season, achieving 5th place in the world in quals rankings (the one season we did not make worlds lol).',
       scale: 1,
+      cameraPosition: [0, 0, 0.6] as [number, number, number],
     },
   ];
 
@@ -124,6 +128,7 @@ export default function DesignShowcase() {
             modelUrl={model.modelUrl}
             description={model.description}
             scale={model.scale}
+            cameraPosition={model.cameraPosition}
           />
         </div>
       ))}
