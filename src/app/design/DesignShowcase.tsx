@@ -21,7 +21,7 @@ function Model({ url, scale = 1 }: { url: string; scale?: number }) {
 function Scene({ modelUrl, scale }: { modelUrl: string; scale?: number }) {
   return (
     <Canvas
-      camera={{ position: [0, 0, 5], fov: 50 }}
+      camera={{ position: [0, 0, 2], fov: 70 }}
       style={{ height: '400px' }}
       gl={{ 
         antialias: true, 
@@ -49,9 +49,9 @@ function Scene({ modelUrl, scale }: { modelUrl: string; scale?: number }) {
           enableZoom={true}
           enableRotate={true}
           autoRotate={true}
-          autoRotateSpeed={0.5}
-          minDistance={2}
-          maxDistance={10}
+          autoRotateSpeed={0.7}
+          minDistance={1}
+          maxDistance={4}
         />
       </Suspense>
     </Canvas>
