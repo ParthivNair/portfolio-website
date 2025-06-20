@@ -73,25 +73,27 @@ function ModelSection({
 }) {
   return (
     <div className="relative w-full h-[500px] mb-12">
-      {/* 3D Model Background */}
+      {/* 3D Model Background - positioned to the right */}
       <div className="absolute inset-0 rounded-lg overflow-hidden">
-        <ErrorBoundary>
-          <Suspense fallback={
-            <div className="h-full flex items-center justify-center bg-muted/20">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                <p className="text-sm text-muted-foreground">Loading 3D model...</p>
+        <div className="absolute right-0 top-0 w-3/5 h-full">
+          <ErrorBoundary>
+            <Suspense fallback={
+              <div className="h-full flex items-center justify-center bg-muted/20">
+                <div className="text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                  <p className="text-sm text-muted-foreground">Loading 3D model...</p>
+                </div>
               </div>
-            </div>
-          }>
-            <Scene modelUrl={modelUrl} scale={scale} cameraPosition={cameraPosition} />
-          </Suspense>
-        </ErrorBoundary>
+            }>
+              <Scene modelUrl={modelUrl} scale={scale} cameraPosition={cameraPosition} />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
       </div>
       
-      {/* Content Overlay */}
-      <div className="absolute inset-0 flex flex-col justify-end p-6">
-        <div className="bg-background/80 backdrop-blur-sm rounded-lg p-6 max-w-md">
+      {/* Content Overlay - positioned to the left */}
+      <div className="absolute left-0 top-0 w-2/5 h-full flex flex-col justify-center p-6 pointer-events-none">
+        <div className="bg-background/90 backdrop-blur-sm rounded-lg p-6 pointer-events-auto">
           <h2 className="text-2xl font-bold mb-3">{title}</h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
             {description}
