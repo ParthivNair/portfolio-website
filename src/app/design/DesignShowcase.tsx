@@ -21,7 +21,7 @@ function Model({ url, scale = 1 }: { url: string; scale?: number }) {
 function Scene({ modelUrl, scale }: { modelUrl: string; scale?: number }) {
   return (
     <Canvas
-      camera={{ position: [0, 0, 2], fov: 70 }}
+      camera={{ position: [0, 0, 0.1], fov: 50 }}
       style={{ height: '400px' }}
       gl={{ 
         antialias: true, 
@@ -34,7 +34,7 @@ function Scene({ modelUrl, scale }: { modelUrl: string; scale?: number }) {
       <Suspense fallback={null}>
         {/* Lighting */}
         <ambientLight intensity={0.4} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
+        <directionalLight position={[10, 10, 5]} intensity={0.5} />
         <directionalLight position={[-10, -10, -5]} intensity={0.5} />
         
         {/* Environment for better reflections */}
@@ -50,8 +50,8 @@ function Scene({ modelUrl, scale }: { modelUrl: string; scale?: number }) {
           enableRotate={true}
           autoRotate={true}
           autoRotateSpeed={0.7}
-          minDistance={1}
-          maxDistance={4}
+          minDistance={0.01}
+          maxDistance={2}
         />
       </Suspense>
     </Canvas>
