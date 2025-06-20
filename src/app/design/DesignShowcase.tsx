@@ -32,9 +32,9 @@ function Scene({ modelUrl, scale, cameraPosition = [0, 0, 0.5] }: { modelUrl: st
     >
       <Suspense fallback={null}>
         {/* Lighting */}
-        <ambientLight intensity={0.25} />
-        <directionalLight position={[10, 20, 10]} intensity={0.35} />
-        <directionalLight position={[-10, -20, -10]} intensity={0.35} />
+        <ambientLight intensity={0.2} />
+        <directionalLight position={[10, 20, 10]} intensity={0.2} />
+        <directionalLight position={[-10, -20, -10]} intensity={0.2} />
         
         {/* Environment for better reflections */}
         <Environment preset="studio" />
