@@ -3,7 +3,6 @@
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Environment, Center } from '@react-three/drei';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Model component for individual 3D models
@@ -22,7 +21,7 @@ function Scene({ modelUrl, scale, cameraPosition = [0, 0, 0.5] }: { modelUrl: st
   return (
     <Canvas
       camera={{ position: cameraPosition, fov: 50 }}
-      style={{ height: '400px' }}
+      style={{ height: '100%', width: '100%' }}
       gl={{ 
         antialias: true, 
         alpha: true,
@@ -33,9 +32,9 @@ function Scene({ modelUrl, scale, cameraPosition = [0, 0, 0.5] }: { modelUrl: st
     >
       <Suspense fallback={null}>
         {/* Lighting */}
-        <ambientLight intensity={0.4} />
-        <directionalLight position={[10, 10, 5]} intensity={0.5} />
-        <directionalLight position={[-10, -10, -5]} intensity={0.5} />
+        <ambientLight intensity={0.25} />
+        <directionalLight position={[10, 10, 5]} intensity={0.35} />
+        <directionalLight position={[-10, -10, -5]} intensity={0.35} />
         
         {/* Environment for better reflections */}
         <Environment preset="studio" />
@@ -58,8 +57,8 @@ function Scene({ modelUrl, scale, cameraPosition = [0, 0, 0.5] }: { modelUrl: st
   );
 }
 
-// Model card component
-function ModelCard({ 
+// Model section component
+function ModelSection({ 
   title, 
   modelUrl, 
   description, 
@@ -73,30 +72,33 @@ function ModelCard({
   cameraPosition?: [number, number, number];
 }) {
   return (
-    <Card className="w-full h-full">
-      <CardHeader>
-        <CardTitle className="text-center">{title}</CardTitle>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="mb-4 rounded-lg overflow-hidden bg-muted/50">
-          <ErrorBoundary>
-            <Suspense fallback={
-              <div className="h-[400px] flex items-center justify-center">
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-                  <p className="text-sm text-muted-foreground">Loading 3D model...</p>
-                </div>
+    <div className="relative w-full h-[500px] mb-12">
+      {/* 3D Model Background */}
+      <div className="absolute inset-0 rounded-lg overflow-hidden">
+        <ErrorBoundary>
+          <Suspense fallback={
+            <div className="h-full flex items-center justify-center bg-muted/20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-sm text-muted-foreground">Loading 3D model...</p>
               </div>
-            }>
-              <Scene modelUrl={modelUrl} scale={scale} cameraPosition={cameraPosition} />
-            </Suspense>
-          </ErrorBoundary>
+            </div>
+          }>
+            <Scene modelUrl={modelUrl} scale={scale} cameraPosition={cameraPosition} />
+          </Suspense>
+        </ErrorBoundary>
+      </div>
+      
+      {/* Content Overlay */}
+      <div className="absolute inset-0 flex flex-col justify-end p-6">
+        <div className="bg-background/80 backdrop-blur-sm rounded-lg p-6 max-w-md">
+          <h2 className="text-2xl font-bold mb-3">{title}</h2>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            {description}
+          </p>
         </div>
-        <p className="text-muted-foreground text-sm text-center">
-          {description}
-        </p>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -120,17 +122,16 @@ export default function DesignShowcase() {
   ];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto space-y-8">
       {models.map((model, index) => (
-        <div key={index} className="w-full">
-          <ModelCard
-            title={model.title}
-            modelUrl={model.modelUrl}
-            description={model.description}
-            scale={model.scale}
-            cameraPosition={model.cameraPosition}
-          />
-        </div>
+        <ModelSection
+          key={index}
+          title={model.title}
+          modelUrl={model.modelUrl}
+          description={model.description}
+          scale={model.scale}
+          cameraPosition={model.cameraPosition}
+        />
       ))}
     </div>
   );
