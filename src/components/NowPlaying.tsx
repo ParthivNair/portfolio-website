@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardContent } from '@/components/ui/card';
 import { Music, ExternalLink, Loader2 } from 'lucide-react';
 
 interface SpotifyTrack {
@@ -23,14 +22,14 @@ interface NowPlayingProps {
 // Animated music bars component
 const MusicBars = () => {
   return (
-    <div className="flex items-end space-x-1 h-4 w-6">
+    <div className="flex items-end space-x-0.5 h-3 w-4">
       {[1, 2, 3, 4].map((bar) => (
         <div
           key={bar}
-          className="bg-green-500 rounded-sm animate-pulse"
+          className="bg-green-400 rounded-sm animate-pulse"
           style={{
             width: '2px',
-            height: `${Math.random() * 12 + 4}px`,
+            height: `${Math.random() * 8 + 4}px`,
             animationDelay: `${bar * 0.1}s`,
             animationDuration: `${0.5 + Math.random() * 0.5}s`,
           }}
@@ -44,6 +43,7 @@ export default function NowPlaying({ className = "" }: NowPlayingProps) {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   const fetchNowPlaying = async () => {
     console.log('🎵 [NowPlaying] Starting fetch...');
@@ -109,111 +109,64 @@ export default function NowPlaying({ className = "" }: NowPlayingProps) {
     return () => clearInterval(interval);
   }, []);
 
-  if (loading) {
-    return (
-      <Card className={`w-full max-w-md ${className}`}>
-        <CardContent className="p-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-muted rounded-md flex items-center justify-center">
-              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-            </div>
-            <div className="flex-1 space-y-2">
-              <div className="h-4 bg-muted rounded animate-pulse" />
-              <div className="h-3 bg-muted rounded animate-pulse w-3/4" />
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (error) {
-    return (
-      <Card className={`w-full max-w-md ${className}`}>
-        <CardContent className="p-4">
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 bg-muted rounded-md flex items-center justify-center">
-              <Music className="h-5 w-5 text-muted-foreground" />
-            </div>
-            <div className="flex-1">
-              <p className="text-sm text-muted-foreground">{error}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (!track) {
+  // Don't render anything if loading or error
+  if (loading || error || !track) {
     return null;
   }
 
   return (
-    <Card className={`w-full max-w-md hover:shadow-lg transition-shadow duration-200 ${className}`}>
-      <CardContent className="p-4">
-        <div className="flex items-center space-x-3">
+    <div 
+      className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ease-in-out ${className}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Floating Widget */}
+      <div className={`
+        bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 
+        rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out
+        ${isHovered ? 'scale-105' : 'scale-100'}
+      `}>
+        {/* Compact View */}
+        <div className={`
+          flex items-center space-x-3 p-3 transition-all duration-300 ease-in-out
+          ${isHovered ? 'pb-2' : ''}
+        `}>
           {/* Album Art */}
-          <div className="relative w-12 h-12 rounded-md overflow-hidden bg-muted flex-shrink-0">
+          <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-muted flex-shrink-0 shadow-sm">
             {track.album_image ? (
               <Image
                 src={track.album_image}
                 alt={`${track.album} album cover`}
                 fill
                 className="object-cover"
-                sizes="48px"
+                sizes="40px"
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <Music className="h-5 w-5 text-muted-foreground" />
+              <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+                <Music className="h-4 w-4 text-gray-400" />
               </div>
             )}
           </div>
 
-          {/* Track Info */}
+          {/* Compact Info */}
           <div className="flex-1 min-w-0">
             <div className="flex items-center space-x-2 mb-1">
-              <div className="flex items-center space-x-2 min-w-0">
-                {track.is_playing && <MusicBars />}
-                <span className="text-xs font-medium text-green-600">
-                  {track.is_playing ? 'Now Playing' : 'Recently Played'}
-                </span>
-              </div>
+              {track.is_playing && <MusicBars />}
+              <span className="text-xs font-medium text-green-600 dark:text-green-400">
+                Listening to
+              </span>
             </div>
             
-            <div className="space-y-1">
-              {track.spotify_url ? (
-                <Link
-                  href={track.spotify_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block group"
-                >
-                  <h3 className="font-medium text-sm truncate group-hover:text-green-600 transition-colors duration-200 flex items-center">
-                    {track.title}
-                    <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
-                  </h3>
-                </Link>
-              ) : (
-                <h3 className="font-medium text-sm truncate">{track.title}</h3>
-              )}
-              
-              <p className="text-xs text-muted-foreground truncate">
-                {track.artists.join(', ')}
-              </p>
-              
-              {track.album && (
-                <p className="text-xs text-muted-foreground truncate">
-                  {track.album}
-                </p>
-              )}
+            <div className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+              {track.title}
             </div>
           </div>
 
           {/* Spotify Logo */}
           <div className="flex-shrink-0">
-            <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+            <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
               <svg
-                className="w-3 h-3 text-white"
+                className="w-2.5 h-2.5 text-white"
                 viewBox="0 0 24 24"
                 fill="currentColor"
               >
@@ -222,7 +175,45 @@ export default function NowPlaying({ className = "" }: NowPlayingProps) {
             </div>
           </div>
         </div>
-      </CardContent>
-    </Card>
+
+        {/* Expanded View on Hover */}
+        <div className={`
+          overflow-hidden transition-all duration-300 ease-in-out
+          ${isHovered ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}
+        `}>
+          <div className="px-3 pb-3 pt-1 border-t border-gray-200/50 dark:border-gray-700/50">
+            <div className="space-y-1">
+              {track.spotify_url ? (
+                <Link
+                  href={track.spotify_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block group"
+                >
+                  <div className="text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200 flex items-center">
+                    {track.title}
+                    <ExternalLink className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                  </div>
+                </Link>
+              ) : (
+                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                  {track.title}
+                </div>
+              )}
+              
+              <div className="text-xs text-gray-600 dark:text-gray-400">
+                by {track.artists.join(', ')}
+              </div>
+              
+              {track.album && (
+                <div className="text-xs text-gray-500 dark:text-gray-500">
+                  on {track.album}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 } 
