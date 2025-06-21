@@ -9,6 +9,7 @@ import { LazyMotion, domAnimation, m } from "framer-motion";
 import Image from "next/image";
 import { memo } from "react";
 import { images } from '@/lib/images';
+import NowPlaying from '@/components/NowPlaying';
 
 // Catchphrases for typing effect
 const catchphrases = [
@@ -135,6 +136,11 @@ export default function Home() {
           </m.div>
         </section>
       </LazyMotion>
+
+      {/* Now Playing Section */}
+      <section className="flex justify-center py-8">
+        <NowPlaying />
+      </section>
 
       {/* About Me Section */}
       <section className="py-12" role="main">

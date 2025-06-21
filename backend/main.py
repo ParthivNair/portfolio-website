@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.contact import router as contact_router
+from api.spotify import router as spotify_router
 
 app = FastAPI(
     title="Portfolio Backend API",
@@ -24,6 +25,7 @@ app.add_middleware(
 
 # Include routers
 app.include_router(contact_router, prefix="/api")
+app.include_router(spotify_router, prefix="/api")
 
 @app.get("/")
 async def root():
