@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Music, ExternalLink, Loader2 } from 'lucide-react';
+import { Music, ExternalLink } from 'lucide-react';
 
 interface SpotifyTrack {
   title: string;
