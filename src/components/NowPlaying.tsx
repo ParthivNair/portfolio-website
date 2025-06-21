@@ -122,7 +122,7 @@ export default function NowPlaying({ className = "" }: NowPlayingProps) {
     >
       {/* Floating Widget */}
       <div className={`
-        bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 
+        bg-white/10 backdrop-blur-lg border border-white/20 
         rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out
         ${isHovered ? 'scale-105' : 'scale-100'}
       `}>
@@ -181,7 +181,7 @@ export default function NowPlaying({ className = "" }: NowPlayingProps) {
           overflow-hidden transition-all duration-300 ease-in-out
           ${isHovered ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}
         `}>
-          <div className="px-3 pb-3 pt-1 border-t border-gray-200/50 dark:border-gray-700/50">
+          <div className="px-3 pb-3 pt-1 border-t border-white/20">
             <div className="space-y-1">
               {track.spotify_url ? (
                 <Link
