@@ -23,8 +23,11 @@ class SpotifyAPI:
     
     def get_access_token(self) -> Optional[str]:
         """Get access token using refresh token"""
+        logger.info("🔑 [SpotifyAPI] Getting access token...")
+        
         try:
             # Encode client credentials
+            logger.info("🔐 [SpotifyAPI] Encoding client credentials...")
             credentials = base64.b64encode(
                 f"{self.client_id}:{self.client_secret}".encode()
             ).decode()
@@ -39,6 +42,7 @@ class SpotifyAPI:
                 'refresh_token': self.refresh_token
             }
             
+            logger.info("📡 [SpotifyAPI] Making token request to Spotify...")
             response = requests.post(
                 'https://accounts.spotify.com/api/token',
                 headers=headers,
@@ -46,40 +50,57 @@ class SpotifyAPI:
                 timeout=10
             )
             
+            logger.info(f"📥 [SpotifyAPI] Token response: {response.status_code}")
+            
             if response.status_code == 200:
-                return response.json().get('access_token')
+                token_data = response.json()
+                access_token = token_data.get('access_token')
+                logger.info(f"✅ [SpotifyAPI] Access token obtained successfully")
+                return access_token
             else:
-                logger.error(f"Failed to get access token: {response.status_code} - {response.text}")
+                logger.error(f"❌ [SpotifyAPI] Failed to get access token: {response.status_code} - {response.text}")
                 return None
                 
         except Exception as e:
-            logger.error(f"Error getting access token: {str(e)}")
+            logger.error(f"❌ [SpotifyAPI] Error getting access token: {str(e)}")
             return None
     
     def get_currently_playing(self, access_token: str) -> Optional[Dict[str, Any]]:
         """Get currently playing track"""
+        logger.info("🎧 [SpotifyAPI] Getting currently playing track...")
+        
         try:
             headers = {'Authorization': f'Bearer {access_token}'}
             
+            logger.info("📡 [SpotifyAPI] Making currently-playing request to Spotify...")
             response = requests.get(
                 'https://api.spotify.com/v1/me/player/currently-playing',
                 headers=headers,
                 timeout=10
             )
             
+            logger.info(f"📥 [SpotifyAPI] Currently playing response: {response.status_code}")
+            
             if response.status_code == 200 and response.content:
+                logger.info("✅ [SpotifyAPI] Currently playing data received, parsing...")
                 data = response.json()
                 if data and data.get('item'):
-                    return self.format_track_data(data, is_playing=data.get('is_playing', False))
+                    track_data = self.format_track_data(data, is_playing=data.get('is_playing', False))
+                    logger.info(f"✅ [SpotifyAPI] Currently playing track: {track_data['title']}")
+                    return track_data
+                else:
+                    logger.info("ℹ️ [SpotifyAPI] Response received but no track item found")
+                    return None
             elif response.status_code == 204:
                 # No content - nothing currently playing
+                logger.info("ℹ️ [SpotifyAPI] No content (204) - nothing currently playing")
                 return None
             else:
-                logger.warning(f"Currently playing request failed: {response.status_code}")
+                logger.warning(f"⚠️ [SpotifyAPI] Currently playing request failed: {response.status_code} - {response.text}")
                 return None
                 
         except Exception as e:
-            logger.error(f"Error getting currently playing: {str(e)}")
+            logger.error(f"❌ [SpotifyAPI] Error getting currently playing: {str(e)}")
             return None
     
     def get_recently_played(self, access_token: str) -> Optional[Dict[str, Any]]:
@@ -167,24 +188,49 @@ async def get_now_playing():
         JSON object with track information including title, artists, album, 
         album image, Spotify URL, and playing status
     """
+    logger.info("🎵 [API] /now-playing endpoint called")
+    
     try:
+        # Check environment variables
+        logger.info("🔧 [API] Checking environment variables...")
+        env_vars = {
+            'SPOTIFY_CLIENT_ID': bool(spotify_api.client_id),
+            'SPOTIFY_CLIENT_SECRET': bool(spotify_api.client_secret),
+            'SPOTIFY_REFRESH_TOKEN': bool(spotify_api.refresh_token)
+        }
+        logger.info(f"🔧 [API] Environment variables status: {env_vars}")
+        
         # Get access token
+        logger.info("🔑 [API] Getting access token...")
         access_token = spotify_api.get_access_token()
         if not access_token:
+            logger.error("❌ [API] Failed to get access token")
             raise HTTPException(
                 status_code=500, 
                 detail="Failed to authenticate with Spotify"
             )
+        logger.info(f"✅ [API] Access token obtained: {access_token[:10]}...{access_token[-4:]}")
         
         # Try to get currently playing track first
+        logger.info("🎧 [API] Trying to get currently playing track...")
         track_data = spotify_api.get_currently_playing(access_token)
         
-        # If nothing is currently playing, get most recently played
-        if not track_data:
+        if track_data:
+            logger.info(f"✅ [API] Currently playing track found: {track_data['title']} by {', '.join(track_data['artists'])}")
+        else:
+            logger.info("ℹ️ [API] No currently playing track, trying recently played...")
+            
+            # If nothing is currently playing, get most recently played
             track_data = spotify_api.get_recently_played(access_token)
+            
+            if track_data:
+                logger.info(f"✅ [API] Recently played track found: {track_data['title']} by {', '.join(track_data['artists'])}")
+            else:
+                logger.warning("⚠️ [API] No recently played tracks found")
         
         # If still no data, return default response
         if not track_data:
+            logger.info("📭 [API] Returning default 'no activity' response")
             return {
                 'title': 'No recent activity',
                 'artists': ['Spotify'],
@@ -195,13 +241,19 @@ async def get_now_playing():
                 'preview_url': None
             }
         
+        logger.info(f"🎯 [API] Returning track data: {track_data}")
         return track_data
         
-    except HTTPException:
+    except HTTPException as he:
+        logger.error(f"❌ [API] HTTP Exception: {he.status_code} - {he.detail}")
         raise
     except Exception as e:
-        logger.error(f"Unexpected error in now-playing endpoint: {str(e)}")
+        logger.error(f"❌ [API] Unexpected error in now-playing endpoint: {str(e)}")
+        logger.error(f"❌ [API] Error type: {type(e).__name__}")
+        logger.error(f"❌ [API] Error details: {str(e)}")
+        import traceback
+        logger.error(f"❌ [API] Traceback: {traceback.format_exc()}")
         raise HTTPException(
             status_code=500,
-            detail="Internal server error"
+            detail=f"Internal server error: {str(e)}"
         ) 

@@ -46,14 +46,20 @@ export default function NowPlaying({ className = "" }: NowPlayingProps) {
   const [error, setError] = useState<string | null>(null);
 
   const fetchNowPlaying = async () => {
+    console.log('🎵 [NowPlaying] Starting fetch...');
+    
     try {
       setError(null);
       
       // Use the backend API endpoint - dynamic URL for development/production
       const apiUrl = process.env.NODE_ENV === 'development' 
         ? 'http://localhost:8000/api/now-playing'
-        : 'https://parthivnair.com/api/now-playing';
-        
+        : 'https://api.parthivnair.com/api/now-playing';
+      
+      console.log('🌐 [NowPlaying] API URL:', apiUrl);
+      console.log('🔧 [NowPlaying] Environment:', process.env.NODE_ENV);
+      
+      console.log('📡 [NowPlaying] Making fetch request...');
       const response = await fetch(apiUrl, {
         method: 'GET',
         headers: {
@@ -61,17 +67,36 @@ export default function NowPlaying({ className = "" }: NowPlayingProps) {
         },
       });
 
+      console.log('📥 [NowPlaying] Response received:', {
+        status: response.status,
+        statusText: response.statusText,
+        ok: response.ok,
+        headers: Object.fromEntries(response.headers.entries())
+      });
+
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error('❌ [NowPlaying] HTTP error response body:', errorText);
+        throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
       }
 
+      console.log('🔄 [NowPlaying] Parsing JSON response...');
       const data: SpotifyTrack = await response.json();
+      console.log('✅ [NowPlaying] Successfully parsed data:', data);
+      
       setTrack(data);
+      console.log('🎯 [NowPlaying] Track state updated successfully');
     } catch (err) {
-      console.error('Error fetching Spotify data:', err);
-      setError('Failed to load music data');
+      console.error('❌ [NowPlaying] Error fetching Spotify data:', err);
+      console.error('❌ [NowPlaying] Error details:', {
+        name: err instanceof Error ? err.name : 'Unknown',
+        message: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined
+      });
+      setError(`Failed to load music data: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setLoading(false);
+      console.log('🏁 [NowPlaying] Fetch completed, loading set to false');
     }
   };
 
