@@ -17,6 +17,7 @@ interface SpotifyTrack {
 
 interface NowPlayingProps {
   className?: string;
+  isEmbedded?: boolean;
 }
 
 // Animated music bars component
@@ -39,7 +40,7 @@ const MusicBars = () => {
   );
 };
 
-export default function NowPlaying({ className = "" }: NowPlayingProps) {
+export default function NowPlaying({ className = "", isEmbedded = false }: NowPlayingProps) {
   const [track, setTrack] = useState<SpotifyTrack | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -116,7 +117,7 @@ export default function NowPlaying({ className = "" }: NowPlayingProps) {
 
   return (
     <div 
-      className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ease-in-out ${className}`}
+      className={`${isEmbedded ? 'relative w-full' : 'fixed bottom-6 right-6 z-50'} transition-all duration-300 ease-in-out ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -124,7 +125,7 @@ export default function NowPlaying({ className = "" }: NowPlayingProps) {
       <div className={`
         bg-white/10 backdrop-blur-lg border border-white/20 
         rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ease-in-out
-        ${isHovered ? 'scale-105' : 'scale-100'}
+        ${isHovered && !isEmbedded ? 'scale-105' : 'scale-100'}
       `}>
         {/* Compact View */}
         <div className={`

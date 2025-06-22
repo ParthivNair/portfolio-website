@@ -5,6 +5,7 @@ import { FileText } from "lucide-react";
 import { images } from "@/lib/images";
 import Image from "next/image";
 import { Metadata } from "next";
+import NowPlaying from "@/components/NowPlaying";
 
 export const metadata: Metadata = {
     title: "About Parthiv Nair",
@@ -76,13 +77,16 @@ export default function AboutPage() {
                         </div>
                     </div>
 
-                    <div className="relative h-64 bg-muted rounded-lg overflow-hidden border-4 border-muted">
-                        <Image 
-                            src={images.profile.pfp2} 
-                            alt="Parthiv Nair - Computer Science student and developer" 
-                            fill 
-                            className="object-cover" 
-                        />
+                    <div className="space-y-4">
+                        <div className="relative h-64 bg-muted rounded-lg overflow-hidden border-4 border-muted">
+                            <Image 
+                                src={images.profile.pfp2} 
+                                alt="Parthiv Nair - Computer Science student and developer" 
+                                fill 
+                                className="object-cover" 
+                            />
+                        </div>
+                        <NowPlaying isEmbedded={true} />
                     </div>
                 </div>
             </section>
