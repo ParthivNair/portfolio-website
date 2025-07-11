@@ -120,6 +120,7 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           // Uncoordinated behavior - react late to obstacles
           if (vehicleAhead && vehicleAhead.x - vehicle.x < 50) {
             targetSpeed = Math.max(0, vehicleAhead.speed - 1)
+            vehicle.intentSignal = { type: 'brake', strength: 0.8 }
           }
           
           // Emergency vehicle causes chaos - individual reactions
@@ -129,6 +130,7 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
               // Random panic reactions
               if (Math.random() < 0.3) {
                 targetSpeed = Math.max(0, targetSpeed - 3)
+                vehicle.intentSignal = { type: 'emergency', strength: 1 }
               }
             }
           }
@@ -137,6 +139,12 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           const vehiclesInLane = newVehicles.filter(v => v.lane === vehicle.lane && v.x > vehicle.x - 200 && v.x < vehicle.x + 200)
           if (vehiclesInLane.length > 3) {
             targetSpeed = Math.max(0, targetSpeed - 1)
+            vehicle.intentSignal = { type: 'brake', strength: 0.6 }
+          }
+          
+          // Random stress signals to show chaotic behavior
+          if (Math.random() < 0.1) {
+            vehicle.intentSignal = { type: 'merge', strength: 0.5 }
           }
         } else {
           // Coordinated behavior - smooth reactions
@@ -427,21 +435,24 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
                     height: vehicle.isEmergency ? 12 : 8,
                     left: vehicle.x,
                     top: vehicle.y - (vehicle.isEmergency ? 6 : 4),
-                    boxShadow: vehicle.isEmergency ? '0 0 16px rgba(239, 68, 68, 0.8)' : '0 0 4px rgba(255, 255, 255, 0.3)'
+                    boxShadow: vehicle.isEmergency ? '0 0 16px rgba(239, 68, 68, 0.8)' : 
+                              mode === 'problem' ? '0 0 8px rgba(239, 68, 68, 0.4)' :
+                              '0 0 8px rgba(16, 185, 129, 0.4)'
                   }}
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.5 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {/* Intent signals for solution mode - subtle glow effect */}
-                  {mode === 'solution' && vehicle.intentSignal && (
+                  {/* Intent signals - subtle glow effect */}
+                  {vehicle.intentSignal && (
                     <div
                       className="absolute -inset-1 rounded-full animate-pulse"
                       style={{
-                        backgroundColor: vehicle.intentSignal.type === 'emergency' ? '#ef4444' : 
+                        backgroundColor: mode === 'problem' ? '#ef4444' : 
+                                       vehicle.intentSignal.type === 'emergency' ? '#ef4444' : 
                                        vehicle.intentSignal.type === 'brake' ? '#f59e0b' : '#10b981',
-                        opacity: vehicle.intentSignal.strength * 0.3,
+                        opacity: mode === 'problem' ? vehicle.intentSignal.strength * 0.4 : vehicle.intentSignal.strength * 0.3,
                         filter: 'blur(2px)'
                       }}
                     />

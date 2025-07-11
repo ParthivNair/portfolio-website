@@ -3,58 +3,82 @@ import TrafficControls from './TrafficControls'
 
 export default function SolutionView() {
   return (
-    <div className="container mx-auto px-6 py-8 max-w-7xl">
-      {/* Simulation Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        {/* Simulation */}
-        <div className="lg:col-span-2">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-light text-white mb-2">Intelligent Coordination</h2>
-            <p className="text-gray-400">Synchronized collective behavior</p>
+    <div className="container mx-auto px-4 py-6 max-w-7xl">
+      {/* Header Section */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-light text-white mb-3">Intelligent Coordination</h1>
+        <p className="text-gray-400 text-lg">Synchronized collective behavior</p>
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-8">
+        {/* Simulation - Takes up more space */}
+        <div className="xl:col-span-3">
+          <div className="glow-card-green p-6 h-full">
+            <HighwaySimulation mode="solution" />
           </div>
-          <HighwaySimulation mode="solution" />
         </div>
 
-        {/* Description & Metrics */}
-        <div className="space-y-6">
-          {/* Description */}
-          <div className="glow-card p-6">
-            <h3 className="text-lg font-medium text-white mb-4">The Solution</h3>
+        {/* Side Panel - Solution Details */}
+        <div className="xl:col-span-1 space-y-6">
+          {/* Solution Description */}
+          <div className="glow-card-green p-6">
+            <h3 className="text-xl font-medium text-white mb-4 flex items-center">
+              <span className="text-green-400 mr-2">✅</span>
+              The Solution
+            </h3>
             <div className="space-y-3 text-sm text-gray-300">
-              <p>• Instant speed synchronization</p>
-              <p>• Coordinated lane changes</p>
-              <p>• Emergency corridor creation</p>
-              <p>• Collective intelligence</p>
+              <div className="flex items-start">
+                <span className="text-green-400 mr-2">•</span>
+                <span>Instant speed synchronization</span>
+              </div>
+              <div className="flex items-start">
+                <span className="text-green-400 mr-2">•</span>
+                <span>Coordinated lane changes</span>
+              </div>
+              <div className="flex items-start">
+                <span className="text-green-400 mr-2">•</span>
+                <span>Emergency corridor creation</span>
+              </div>
+              <div className="flex items-start">
+                <span className="text-green-400 mr-2">•</span>
+                <span>Collective intelligence</span>
+              </div>
             </div>
           </div>
 
-          {/* Metrics */}
-          <div className="glow-card p-6">
-            <h3 className="text-lg font-medium text-white mb-4">Benefits</h3>
+          {/* Benefits Metrics */}
+          <div className="glow-card-green p-6">
+            <h3 className="text-xl font-medium text-white mb-4 flex items-center">
+              <span className="text-green-400 mr-2">📈</span>
+              Benefits
+            </h3>
             <div className="space-y-4">
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-gray-400">Efficiency</span>
-                <span className="text-green-400">High</span>
+                <span className="text-green-400 font-medium">High</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-gray-400">Phantom Jams</span>
-                <span className="text-green-400">Eliminated</span>
+                <span className="text-green-400 font-medium">Eliminated</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-gray-400">Emergency Response</span>
-                <span className="text-green-400">Instant</span>
+                <span className="text-green-400 font-medium">Instant</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-gray-400">Stress Level</span>
-                <span className="text-green-400">Low</span>
+                <span className="text-green-400 font-medium">Low</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Controls */}
-      <TrafficControls mode="solution" />
+      {/* Traffic Controls Section */}
+      <div className="mt-8">
+        <TrafficControls mode="solution" />
+      </div>
     </div>
   )
 } 

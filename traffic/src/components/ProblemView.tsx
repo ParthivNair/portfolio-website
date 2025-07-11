@@ -3,58 +3,82 @@ import TrafficControls from './TrafficControls'
 
 export default function ProblemView() {
   return (
-    <div className="container mx-auto px-6 py-8 max-w-7xl">
-      {/* Simulation Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-        {/* Simulation */}
-        <div className="lg:col-span-2">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-light text-white mb-2">Current Traffic</h2>
-            <p className="text-gray-400">Uncoordinated individual reactions</p>
+    <div className="container mx-auto px-4 py-6 max-w-7xl">
+      {/* Header Section */}
+      <div className="text-center mb-8">
+        <h1 className="text-3xl font-light text-white mb-3">Current Traffic</h1>
+        <p className="text-gray-400 text-lg">Uncoordinated individual reactions</p>
+      </div>
+
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 mb-8">
+        {/* Simulation - Takes up more space */}
+        <div className="xl:col-span-3">
+          <div className="glow-card-red p-6 h-full">
+            <HighwaySimulation mode="problem" />
           </div>
-          <HighwaySimulation mode="problem" />
         </div>
 
-        {/* Description & Metrics */}
-        <div className="space-y-6">
-          {/* Description */}
-          <div className="glow-card p-6">
-            <h3 className="text-lg font-medium text-white mb-4">The Problem</h3>
+        {/* Side Panel - Problem Details */}
+        <div className="xl:col-span-1 space-y-6">
+          {/* Problem Description */}
+          <div className="glow-card-red p-6">
+            <h3 className="text-xl font-medium text-white mb-4 flex items-center">
+              <span className="text-red-400 mr-2">⚠️</span>
+              The Problem
+            </h3>
             <div className="space-y-3 text-sm text-gray-300">
-              <p>• Late reactions create phantom jams</p>
-              <p>• Aggressive merging causes bottlenecks</p>
-              <p>• Emergency vehicles get blocked</p>
-              <p>• Individual decisions hurt the system</p>
+              <div className="flex items-start">
+                <span className="text-red-400 mr-2">•</span>
+                <span>Late reactions create phantom jams</span>
+              </div>
+              <div className="flex items-start">
+                <span className="text-red-400 mr-2">•</span>
+                <span>Aggressive merging causes bottlenecks</span>
+              </div>
+              <div className="flex items-start">
+                <span className="text-red-400 mr-2">•</span>
+                <span>Emergency vehicles get blocked</span>
+              </div>
+              <div className="flex items-start">
+                <span className="text-red-400 mr-2">•</span>
+                <span>Individual decisions hurt the system</span>
+              </div>
             </div>
           </div>
 
-          {/* Metrics */}
-          <div className="glow-card p-6">
-            <h3 className="text-lg font-medium text-white mb-4">Impact</h3>
+          {/* Impact Metrics */}
+          <div className="glow-card-red p-6">
+            <h3 className="text-xl font-medium text-white mb-4 flex items-center">
+              <span className="text-red-400 mr-2">📊</span>
+              Impact
+            </h3>
             <div className="space-y-4">
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-gray-400">Efficiency</span>
-                <span className="text-red-400">Low</span>
+                <span className="text-red-400 font-medium">Low</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-gray-400">Phantom Jams</span>
-                <span className="text-red-400">Frequent</span>
+                <span className="text-red-400 font-medium">Frequent</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-gray-400">Emergency Response</span>
-                <span className="text-red-400">Slow</span>
+                <span className="text-red-400 font-medium">Slow</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <span className="text-gray-400">Stress Level</span>
-                <span className="text-red-400">High</span>
+                <span className="text-red-400 font-medium">High</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Controls */}
-      <TrafficControls mode="problem" />
+      {/* Traffic Controls Section */}
+      <div className="mt-8">
+        <TrafficControls mode="problem" />
+      </div>
     </div>
   )
 } 
