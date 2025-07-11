@@ -44,3 +44,27 @@ models-backup/
 
 # Keep optimized models (these are small enough for GitHub)
 !public/optimized/
+
+# Docs folder build artifacts (Next.js static export)
+docs/_next/
+docs/static/
+docs/server/
+docs/build/
+docs/cache/
+docs/types/
+docs/trace
+docs/transform.js
+docs/transform.js.map
+docs/*-build-manifest.json
+docs/fallback-build-manifest.json
+docs/package.json
+
+# Generated HTML files in docs (if these are build outputs)
+docs/*.html
+docs/*.txt
+docs/about/
+docs/contact/
+docs/projects/
+docs/admin/
+docs/design/
+docs/404/
