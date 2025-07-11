@@ -70,7 +70,7 @@ function Slider({
         {label}
       </label>
       
-      <div style={{ position: 'relative', width: '100%' }}>
+      <div style={{ position: 'relative', width: '100%', height: '20px', display: 'flex', alignItems: 'center' }}>
         {/* Background track */}
         <div style={{
           position: 'absolute',
@@ -107,7 +107,9 @@ function Slider({
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
           style={{
-            position: 'relative',
+            position: 'absolute',
+            top: 0,
+            left: 0,
             width: '100%',
             height: '20px',
             background: 'transparent',
@@ -146,6 +148,7 @@ function Slider({
           transition: all 0.2s ease;
           position: relative;
           z-index: 10;
+          margin-top: 0;
         }
         
         .custom-slider::-webkit-slider-thumb:hover {
@@ -160,8 +163,8 @@ function Slider({
         }
         
         .custom-slider::-moz-range-thumb {
-          height: 20px;
-          width: 20px;
+          height: 14px;
+          width: 14px;
           border-radius: 50%;
           background: #3b82f6;
           cursor: pointer;
@@ -170,6 +173,7 @@ function Slider({
           transition: all 0.2s ease;
           -moz-appearance: none;
           appearance: none;
+          margin-top: 0;
         }
         
         .custom-slider::-moz-range-thumb:hover {
@@ -186,6 +190,7 @@ function Slider({
         .custom-slider::-moz-range-track {
           background: transparent;
           border: none;
+          height: 6px;
         }
         
         .custom-slider:focus {
