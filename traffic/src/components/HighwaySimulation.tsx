@@ -21,6 +21,10 @@ interface Vehicle {
   targetLane?: number
   mergeProgress: number
   intentSignal?: { type: 'merge' | 'brake' | 'emergency', strength: number }
+  moodLevel: number // 1 (relaxed) to 10 (agitated)
+  laneChangeChance: number // Calculated based on mood level
+  mentalLevel: number // 1 (keep cool easily) to 10 (lose cool quickly)
+  timeStuckInTraffic: number // Time spent going slow, affects mood
 }
 
 interface SimulationState {
@@ -67,6 +71,83 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
   const animationRef = useRef<number>()
   const lastTimeRef = useRef<number>(0)
 
+  // Generate mood level with distribution centered around 2-5 (majority of drivers)
+  const generateMoodLevel = (): number => {
+    const random = Math.random()
+    
+    if (random < 0.7) {
+      // 70% of drivers are in the 2-5 range (normal drivers)
+      return Math.floor(Math.random() * 4) + 2 // 2, 3, 4, or 5
+    } else if (random < 0.9) {
+      // 20% are more agitated (6-8)
+      return Math.floor(Math.random() * 3) + 6 // 6, 7, or 8
+    } else if (random < 0.95) {
+      // 5% are very agitated (9-10)
+      return Math.floor(Math.random() * 2) + 9 // 9 or 10
+    } else {
+      // 5% are extremely relaxed right-lane cruisers (1)
+      return 1
+    }
+  }
+
+  // Generate mental level (patience/resilience) - exponentially more patient people
+  const generateMentalLevel = (): number => {
+    const random = Math.random()
+    // Exponential distribution heavily favoring 1s (patient people)
+    // Using exponential formula to create more 1s than 10s
+    const mentalLevel = Math.min(10, Math.max(1, Math.floor(-Math.log(1 - random) * 1.5) + 1))
+    return mentalLevel
+  }
+
+  // Calculate lane change chance based on mood level (exponential growth)
+  const calculateLaneChangeChance = (moodLevel: number): number => {
+    // Exponential curve: 0.1% for mood 1, 3% for mood 6, 8% for mood 10
+    // Using formula: 0.001 * e^(ln(80) * (mood-1)/9)
+    const baseChance = 0.001 // 0.1% for mood level 1
+    const maxChance = 0.08   // 8% for mood level 10
+    const exponent = (moodLevel - 1) / 9 // Normalize to 0-1 range
+    const chance = baseChance * Math.pow(maxChance / baseChance, exponent)
+    return Math.min(maxChance, chance)
+  }
+
+  // Select lane based on mood level and vehicle type
+  const selectLaneByMood = (moodLevel: number, type: string, fromOnRamp: boolean): number => {
+    if (fromOnRamp) {
+      return LANE_COUNT - 1 // On-ramp vehicles start in rightmost lane
+    }
+    
+    if (type === 'truck') {
+      // Trucks generally stay in slower lanes (2-4)
+      // Mood affects preference within truck-appropriate lanes
+      if (moodLevel <= 3) {
+        return 4 // Relaxed trucks stay rightmost
+      } else if (moodLevel <= 6) {
+        return Math.random() < 0.7 ? 4 : 3 // Most stay right, some use lane 3
+      } else {
+        return Math.random() < 0.5 ? 3 : 2 // Agitated trucks can use lane 2-3
+      }
+    } else {
+      // Cars: Mood determines lane preference
+      // Mood 1: Right lane cruisers (lane 4)
+      // Mood 2-3: Prefer right lanes but not slowest (lanes 3-4)
+      // Mood 4-5: Middle lanes (lanes 1-3)
+      // Mood 6-7: Left-center lanes (lanes 0-2)
+      // Mood 8-10: Left lanes (lanes 0-1)
+      
+      if (moodLevel === 1) {
+        return 4 // Right lane cruisers
+      } else if (moodLevel <= 3) {
+        return Math.random() < 0.6 ? 3 : 4 // Mostly lane 3, some lane 4
+      } else if (moodLevel <= 5) {
+        return Math.floor(Math.random() * 3) + 1 // Lanes 1-3, evenly distributed
+      } else if (moodLevel <= 7) {
+        return Math.floor(Math.random() * 3) // Lanes 0-2, evenly distributed
+      } else {
+        return Math.random() < 0.7 ? 0 : 1 // Mostly left lane, some lane 1
+      }
+    }
+  }
+
   // Generate a new vehicle
   const generateVehicle = useCallback((isEmergency = false, fromOnRamp = false): Vehicle => {
     const vehicleTypes = ['car', 'car', 'car', 'truck'] as const
@@ -74,26 +155,36 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
     
     const colors = type === 'emergency' ? ['#ff0000'] : ['#ffffff']
     
-    // Lane selection based on vehicle type and desired speed
-    let lane: number
-    if (fromOnRamp) {
-      lane = LANE_COUNT - 1 // On-ramp vehicles start in rightmost lane
-    } else {
-      const baseMaxSpeed = type === 'emergency' ? 8 : type === 'truck' ? 4 : 5 + Math.random() * 2
-      // Faster vehicles prefer left (top) lanes, slower vehicles prefer right (bottom) lanes
-      if (type === 'truck') {
-        lane = Math.floor(Math.random() * 2) + 3 // Trucks prefer lanes 3-4 (bottom)
-      } else if (baseMaxSpeed > 6) {
-        lane = Math.floor(Math.random() * 2) // Fast cars prefer lanes 0-1 (top)
-      } else {
-        lane = Math.floor(Math.random() * 3) + 1 // Medium cars prefer lanes 1-3 (middle)
-      }
+    // Generate mood level, mental level, and lane change chance
+    const moodLevel = isEmergency ? 10 : generateMoodLevel() // Emergency vehicles are always agitated
+    const mentalLevel = isEmergency ? 10 : generateMentalLevel() // Emergency vehicles have no patience
+    const laneChangeChance = calculateLaneChangeChance(moodLevel)
+    
+    // Select lane based on mood and vehicle type
+    const lane = selectLaneByMood(moodLevel, type, fromOnRamp)
+    
+    // Lane-based speed hierarchy with minimum speeds per lane
+    const laneMinSpeeds = [7, 6, 5, 4, 3] // Minimum speeds for lanes 0-4 (left to right)
+    const laneMaxSpeeds = [9, 7.5, 6.5, 5.5, 4.5] // Maximum speeds for lanes 0-4
+    
+    const baseMaxSpeed = type === 'emergency' ? 10 : type === 'truck' ? 4.5 : 5 + Math.random() * 2
+    
+    // Ensure vehicle speed respects lane minimum and maximum
+    const laneMinSpeed = laneMinSpeeds[lane]
+    const laneMaxSpeed = laneMaxSpeeds[lane]
+    
+    // If vehicle's natural speed is too slow for the lane, boost it to lane minimum
+    // If it's too fast, cap it at lane maximum (unless emergency)
+    let maxSpeed = baseMaxSpeed
+    if (!isEmergency) {
+      maxSpeed = Math.max(laneMinSpeed, Math.min(laneMaxSpeed, baseMaxSpeed))
     }
     
-    // Lane-based speed hierarchy: top lane (0) is fastest, bottom lane (4) is slowest
-    const laneSpeedMultiplier = 1 - (lane * 0.15) // Top lane gets 1.0x, bottom lane gets 0.4x
-    const baseMaxSpeed = type === 'emergency' ? 8 : type === 'truck' ? 4 : 5 + Math.random() * 2
-    const maxSpeed = baseMaxSpeed * laneSpeedMultiplier
+    // Small random variation within lane limits (not mood-based)
+    if (!isEmergency) {
+      const variation = (Math.random() - 0.5) * 0.5 // ±0.25 speed variation
+      maxSpeed = Math.max(laneMinSpeed, Math.min(laneMaxSpeed, maxSpeed + variation))
+    }
     
     return {
       id: `vehicle-${Date.now()}-${Math.random()}`,
@@ -111,9 +202,13 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
       isEmergency,
       isMerging: fromOnRamp,
       mergeProgress: 0,
-      intentSignal: undefined
+      intentSignal: undefined,
+      moodLevel,
+      laneChangeChance,
+      mentalLevel,
+      timeStuckInTraffic: 0
     }
-  }, [])
+  }, [generateMoodLevel, generateMentalLevel, calculateLaneChangeChance, selectLaneByMood])
 
   // Vehicle physics and behavior
   const updateVehicles = useCallback((deltaTime: number) => {
@@ -135,18 +230,73 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
         // Calculate desired speed based on mode and conditions
         let targetSpeed = vehicle.maxSpeed
         
-        // Realistic traffic spacing and braking (for problem mode)
+        // CRITICAL: Prevent overtaking in same lane - physical impossibility
+        if (vehicleAhead) {
+          // Never allow vehicle to go faster than the one directly ahead
+          targetSpeed = Math.min(targetSpeed, vehicleAhead.speed + 0.1)
+        }
+        
+        // Realistic collision avoidance (for problem mode)
         if (mode === 'problem' && vehicleAhead) {
           const distance = vehicleAhead.x - vehicle.x
-          const safeDistance = 30 + (vehicle.speed * 8) // Dynamic safe distance based on speed
-          const criticalDistance = 25 + (vehicle.speed * 3) // Critical braking distance
+          const safeDistance = 35 + (vehicle.speed * 6) // Dynamic safe distance based on speed
+          const criticalDistance = 20 + (vehicle.speed * 2) // Critical collision distance
           
           if (distance < criticalDistance) {
-            // Emergency braking
-            targetSpeed = Math.max(0, vehicleAhead.speed - 2)
+            // About to collide - try to change lanes or emergency brake
+            if (!vehicle.isMerging && Math.random() < vehicle.laneChangeChance) {
+              // Try to change lanes to avoid collision (based on mood level)
+              const possibleLanes = []
+              if (vehicle.lane > 0) possibleLanes.push(vehicle.lane - 1) // Left lane
+              if (vehicle.lane < LANE_COUNT - 1) possibleLanes.push(vehicle.lane + 1) // Right lane
+              
+              // Check if lane change is safe
+              for (const targetLane of possibleLanes) {
+                const vehicleInTargetLane = newVehicles.find(v => 
+                  v.lane === targetLane && 
+                  Math.abs(v.x - vehicle.x) < 60 && 
+                  v.id !== vehicle.id
+                )
+                
+                if (!vehicleInTargetLane) {
+                  // Lane is clear, initiate lane change
+                  vehicle.isMerging = true
+                  vehicle.targetLane = targetLane
+                  break
+                }
+              }
+            }
+            
+            // Emergency brake - cannot overtake in same lane
+            targetSpeed = Math.max(0, vehicleAhead.speed - 1)
+            // Ensure vehicle never goes faster than the one ahead
+            if (vehicle.speed > vehicleAhead.speed) {
+              targetSpeed = Math.min(targetSpeed, vehicleAhead.speed - 0.5)
+            }
           } else if (distance < safeDistance) {
-            // Gradual braking to maintain safe distance
-            targetSpeed = Math.max(0, vehicleAhead.speed * 0.8)
+            // Getting too close - mostly just brake, rarely change lanes
+            if (!vehicle.isMerging && Math.random() < vehicle.laneChangeChance * 0.5) {
+              // Try to change lanes (50% of normal chance when not critical)
+              const possibleLanes = []
+              if (vehicle.lane > 0) possibleLanes.push(vehicle.lane - 1) // Left lane (faster)
+              
+              for (const targetLane of possibleLanes) {
+                const vehicleInTargetLane = newVehicles.find(v => 
+                  v.lane === targetLane && 
+                  Math.abs(v.x - vehicle.x) < 80 && 
+                  v.id !== vehicle.id
+                )
+                
+                if (!vehicleInTargetLane) {
+                  vehicle.isMerging = true
+                  vehicle.targetLane = targetLane
+                  break
+                }
+              }
+            }
+            
+            // Gradual braking to maintain safe distance - cannot overtake
+            targetSpeed = Math.min(vehicleAhead.speed * 0.95, targetSpeed)
           }
         }
         
@@ -155,9 +305,22 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           if (prevState.emergencyActive && !vehicle.isEmergency) {
             const emergencyVehicle = newVehicles.find(v => v.isEmergency)
             if (emergencyVehicle && Math.abs(emergencyVehicle.x - vehicle.x) < 100) {
-              // Random panic reactions
-              if (Math.random() < 0.3) {
+              // Random panic reactions - try to get out of the way
+              if (Math.random() < 0.5) {
                 targetSpeed = Math.max(0, targetSpeed - 3)
+                
+                // Panic lane change if possible
+                if (!vehicle.isMerging && Math.random() < vehicle.laneChangeChance) {
+                  const possibleLanes = []
+                  if (vehicle.lane > 0) possibleLanes.push(vehicle.lane - 1)
+                  if (vehicle.lane < LANE_COUNT - 1) possibleLanes.push(vehicle.lane + 1)
+                  
+                  if (possibleLanes.length > 0) {
+                    const targetLane = possibleLanes[Math.floor(Math.random() * possibleLanes.length)]
+                    vehicle.isMerging = true
+                    vehicle.targetLane = targetLane
+                  }
+                }
               }
             }
           }
@@ -166,6 +329,25 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           const vehiclesInLane = newVehicles.filter(v => v.lane === vehicle.lane && v.x > vehicle.x - 200 && v.x < vehicle.x + 200)
           if (vehiclesInLane.length > 3) {
             targetSpeed = Math.max(0, targetSpeed - 1)
+          }
+          
+          // Aggressive drivers try to overtake by changing lanes (based on mood)
+          if (!vehicle.isMerging && Math.random() < vehicle.laneChangeChance * 0.25) {
+            const leftLane = vehicle.lane - 1
+            
+            // Only try left lane for overtaking (faster lane)
+            if (leftLane >= 0) {
+              const leftLaneVehicle = newVehicles.find(v => 
+                v.lane === leftLane && 
+                Math.abs(v.x - vehicle.x) < 100 && 
+                v.id !== vehicle.id
+              )
+              
+              if (!leftLaneVehicle) {
+                vehicle.isMerging = true
+                vehicle.targetLane = leftLane
+              }
+            }
           }
         } else {
           // Coordinated behavior - smooth reactions
@@ -188,8 +370,8 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
                 targetSpeed = Math.max(0, targetSpeed - 4)
                 vehicle.intentSignal = { type: 'emergency', strength: 1 }
                 
-                // Try to change lanes if possible
-                if (vehicle.lane !== emergencyVehicle.lane && !vehicle.isMerging) {
+                // Try to change lanes if possible (based on mood level)
+                if (vehicle.lane !== emergencyVehicle.lane && !vehicle.isMerging && Math.random() < vehicle.laneChangeChance) {
                   const targetLane = vehicle.lane + (vehicle.lane > emergencyVehicle.lane ? 1 : -1)
                   if (targetLane >= 0 && targetLane < LANE_COUNT) {
                     vehicle.isMerging = true
@@ -212,14 +394,14 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
         // Apply lane closure effects
         if (prevState.lanesClosed[vehicle.lane]) {
           if (mode === 'problem') {
-            // Late merging causes congestion
-            if (vehicle.x > HIGHWAY_WIDTH * 0.7) {
+            // Late merging causes congestion (based on mood level)
+            if (vehicle.x > HIGHWAY_WIDTH * 0.7 && !vehicle.isMerging && Math.random() < vehicle.laneChangeChance) {
               vehicle.isMerging = true
               vehicle.targetLane = vehicle.lane + (vehicle.lane > 2 ? -1 : 1)
             }
           } else {
-            // Early coordinated merging
-            if (vehicle.x > HIGHWAY_WIDTH * 0.3) {
+            // Early coordinated merging (based on mood level)
+            if (vehicle.x > HIGHWAY_WIDTH * 0.3 && !vehicle.isMerging && Math.random() < vehicle.laneChangeChance) {
               vehicle.isMerging = true
               vehicle.targetLane = vehicle.lane + (vehicle.lane > 2 ? -1 : 1)
             }
@@ -229,29 +411,47 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
         // Handle merging
         if (vehicle.isMerging && vehicle.targetLane !== undefined) {
           const targetY = vehicle.targetLane * LANE_WIDTH + LANE_WIDTH / 2
-          const mergeSpeed = mode === 'solution' ? 0.1 : 0.05
+          const mergeSpeed = mode === 'solution' ? 0.1 : 0.08
           
-          // Check if merge is safe
+          // Check if merge is still safe during the merge
           const vehicleInTargetLane = newVehicles.find(v => 
             v.lane === vehicle.targetLane && 
             Math.abs(v.x - vehicle.x) < 80 && 
             v.id !== vehicle.id
           )
           
-          if (mode === 'solution' && vehicleInTargetLane) {
+          if (mode === 'problem' && vehicleInTargetLane) {
+            // In problem mode, vehicles don't coordinate well
+            // Sometimes abort merge if another vehicle is too close
+            if (Math.abs(vehicleInTargetLane.x - vehicle.x) < 40) {
+              // Abort merge and brake
+              vehicle.isMerging = false
+              vehicle.targetLane = undefined
+              vehicle.mergeProgress = 0
+              targetSpeed = Math.max(0, targetSpeed - 2)
+            }
+          } else if (mode === 'solution' && vehicleInTargetLane) {
             // In solution mode, target lane vehicle creates space
             vehicleInTargetLane.speed = Math.max(0, vehicleInTargetLane.speed - 0.5)
             vehicleInTargetLane.intentSignal = { type: 'merge', strength: 1 }
           }
           
-          if (Math.abs(vehicle.y - targetY) > 2) {
-            vehicle.y += (targetY - vehicle.y) * mergeSpeed
-            vehicle.mergeProgress += mergeSpeed
-          } else {
-            vehicle.lane = vehicle.targetLane
-            vehicle.isMerging = false
-            vehicle.targetLane = undefined
-            vehicle.mergeProgress = 0
+          // Continue merging if not aborted
+          if (vehicle.isMerging) {
+            if (Math.abs(vehicle.y - targetY) > 2) {
+              vehicle.y += (targetY - vehicle.y) * mergeSpeed
+              vehicle.mergeProgress += mergeSpeed
+            } else {
+              vehicle.lane = vehicle.targetLane!
+              vehicle.isMerging = false
+              vehicle.targetLane = undefined
+              vehicle.mergeProgress = 0
+              
+              // Lane change completed - reduce mood level (become more relaxed)
+              vehicle.moodLevel = Math.max(1, vehicle.moodLevel - 1)
+              vehicle.laneChangeChance = calculateLaneChangeChance(vehicle.moodLevel)
+              vehicle.timeStuckInTraffic = 0 // Reset traffic frustration
+            }
           }
         }
         
@@ -263,6 +463,27 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
         
         // Calculate current acceleration for glow effect
         vehicle.currentAcceleration = (vehicle.speed - oldSpeed) / Math.max(deltaTime, 0.016)
+        
+        // Track time stuck in traffic and adjust mood based on mental level
+        if (vehicle.speed < vehicle.maxSpeed * 0.5) {
+          // Vehicle is going significantly slower than desired
+          vehicle.timeStuckInTraffic += deltaTime
+          
+          // Increase mood (agitation) based on mental level and time stuck
+          if (vehicle.timeStuckInTraffic > 2) { // After 2 seconds of slow traffic
+            const agitationIncrease = (vehicle.mentalLevel / 10) * deltaTime * 0.5
+            const newMood = Math.min(10, vehicle.moodLevel + agitationIncrease)
+            
+            if (Math.floor(newMood) > Math.floor(vehicle.moodLevel)) {
+              // Mood level increased, recalculate lane change chance
+              vehicle.moodLevel = newMood
+              vehicle.laneChangeChance = calculateLaneChangeChance(vehicle.moodLevel)
+            }
+          }
+        } else {
+          // Vehicle is moving well, reset traffic timer
+          vehicle.timeStuckInTraffic = Math.max(0, vehicle.timeStuckInTraffic - deltaTime * 2)
+        }
         
         // Update position
         vehicle.x += vehicle.speed * deltaTime * 60 * prevState.speed
