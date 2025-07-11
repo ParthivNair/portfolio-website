@@ -11,6 +11,7 @@ interface Vehicle {
   speed: number
   maxSpeed: number
   acceleration: number
+  currentAcceleration: number
   length: number
   width: number
   type: 'car' | 'truck' | 'emergency'
@@ -71,12 +72,28 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
     const vehicleTypes = ['car', 'car', 'car', 'truck'] as const
     const type = isEmergency ? 'emergency' : vehicleTypes[Math.floor(Math.random() * vehicleTypes.length)]
     
-    const colors = type === 'emergency' ? ['#ff0000', '#ffffff'] : 
-                   type === 'truck' ? ['#4a5568', '#2d3748', '#1a202c'] :
-                   ['#3182ce', '#38a169', '#d69e2e', '#9f7aea', '#e53e3e']
+    const colors = type === 'emergency' ? ['#ff0000'] : ['#ffffff']
     
-    const lane = fromOnRamp ? LANE_COUNT - 1 : Math.floor(Math.random() * LANE_COUNT)
-    const maxSpeed = type === 'emergency' ? 8 : type === 'truck' ? 4 : 5 + Math.random() * 2
+    // Lane selection based on vehicle type and desired speed
+    let lane: number
+    if (fromOnRamp) {
+      lane = LANE_COUNT - 1 // On-ramp vehicles start in rightmost lane
+    } else {
+      const baseMaxSpeed = type === 'emergency' ? 8 : type === 'truck' ? 4 : 5 + Math.random() * 2
+      // Faster vehicles prefer left (top) lanes, slower vehicles prefer right (bottom) lanes
+      if (type === 'truck') {
+        lane = Math.floor(Math.random() * 2) + 3 // Trucks prefer lanes 3-4 (bottom)
+      } else if (baseMaxSpeed > 6) {
+        lane = Math.floor(Math.random() * 2) // Fast cars prefer lanes 0-1 (top)
+      } else {
+        lane = Math.floor(Math.random() * 3) + 1 // Medium cars prefer lanes 1-3 (middle)
+      }
+    }
+    
+    // Lane-based speed hierarchy: top lane (0) is fastest, bottom lane (4) is slowest
+    const laneSpeedMultiplier = 1 - (lane * 0.15) // Top lane gets 1.0x, bottom lane gets 0.4x
+    const baseMaxSpeed = type === 'emergency' ? 8 : type === 'truck' ? 4 : 5 + Math.random() * 2
+    const maxSpeed = baseMaxSpeed * laneSpeedMultiplier
     
     return {
       id: `vehicle-${Date.now()}-${Math.random()}`,
@@ -86,6 +103,7 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
       speed: fromOnRamp ? 2 : maxSpeed * 0.8,
       maxSpeed,
       acceleration: type === 'truck' ? 0.1 : 0.15,
+      currentAcceleration: 0,
       length: type === 'truck' ? 40 : type === 'emergency' ? 30 : 25,
       width: type === 'truck' ? 16 : 12,
       type,
@@ -105,24 +123,34 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
       // Update each vehicle
       for (let i = 0; i < newVehicles.length; i++) {
         const vehicle = newVehicles[i]
+        const previousSpeed = vehicle.speed
         
         // Find vehicle in front
         const vehicleAhead = newVehicles.find(v => 
           v.lane === vehicle.lane && 
           v.x > vehicle.x && 
-          v.x - vehicle.x < 150
+          v.x - vehicle.x < 200
         )
         
         // Calculate desired speed based on mode and conditions
         let targetSpeed = vehicle.maxSpeed
         
-        if (mode === 'problem') {
-          // Uncoordinated behavior - react late to obstacles
-          if (vehicleAhead && vehicleAhead.x - vehicle.x < 50) {
-            targetSpeed = Math.max(0, vehicleAhead.speed - 1)
-            vehicle.intentSignal = { type: 'brake', strength: 0.8 }
-          }
+        // Realistic traffic spacing and braking (for problem mode)
+        if (mode === 'problem' && vehicleAhead) {
+          const distance = vehicleAhead.x - vehicle.x
+          const safeDistance = 30 + (vehicle.speed * 8) // Dynamic safe distance based on speed
+          const criticalDistance = 25 + (vehicle.speed * 3) // Critical braking distance
           
+          if (distance < criticalDistance) {
+            // Emergency braking
+            targetSpeed = Math.max(0, vehicleAhead.speed - 2)
+          } else if (distance < safeDistance) {
+            // Gradual braking to maintain safe distance
+            targetSpeed = Math.max(0, vehicleAhead.speed * 0.8)
+          }
+        }
+        
+        if (mode === 'problem') {
           // Emergency vehicle causes chaos - individual reactions
           if (prevState.emergencyActive && !vehicle.isEmergency) {
             const emergencyVehicle = newVehicles.find(v => v.isEmergency)
@@ -130,7 +158,6 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
               // Random panic reactions
               if (Math.random() < 0.3) {
                 targetSpeed = Math.max(0, targetSpeed - 3)
-                vehicle.intentSignal = { type: 'emergency', strength: 1 }
               }
             }
           }
@@ -139,12 +166,6 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           const vehiclesInLane = newVehicles.filter(v => v.lane === vehicle.lane && v.x > vehicle.x - 200 && v.x < vehicle.x + 200)
           if (vehiclesInLane.length > 3) {
             targetSpeed = Math.max(0, targetSpeed - 1)
-            vehicle.intentSignal = { type: 'brake', strength: 0.6 }
-          }
-          
-          // Random stress signals to show chaotic behavior
-          if (Math.random() < 0.1) {
-            vehicle.intentSignal = { type: 'merge', strength: 0.5 }
           }
         } else {
           // Coordinated behavior - smooth reactions
@@ -234,10 +255,14 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           }
         }
         
-        // Update speed
+        // Update speed and track acceleration
         const speedDiff = targetSpeed - vehicle.speed
+        const oldSpeed = vehicle.speed
         vehicle.speed += speedDiff * vehicle.acceleration * deltaTime
         vehicle.speed = Math.max(0, Math.min(vehicle.maxSpeed, vehicle.speed))
+        
+        // Calculate current acceleration for glow effect
+        vehicle.currentAcceleration = (vehicle.speed - oldSpeed) / Math.max(deltaTime, 0.016)
         
         // Update position
         vehicle.x += vehicle.speed * deltaTime * 60 * prevState.speed
@@ -430,30 +455,31 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
                   key={vehicle.id}
                   className="absolute rounded-full"
                   style={{
-                    backgroundColor: vehicle.isEmergency ? '#ef4444' : vehicle.color,
+                    backgroundColor: vehicle.isEmergency ? '#ef4444' : '#ffffff',
                     width: vehicle.isEmergency ? 12 : 8,
                     height: vehicle.isEmergency ? 12 : 8,
                     left: vehicle.x,
                     top: vehicle.y - (vehicle.isEmergency ? 6 : 4),
+                    opacity: 1,
                     boxShadow: vehicle.isEmergency ? '0 0 16px rgba(239, 68, 68, 0.8)' : 
-                              mode === 'problem' ? '0 0 8px rgba(239, 68, 68, 0.4)' :
-                              '0 0 8px rgba(16, 185, 129, 0.4)'
+                              vehicle.currentAcceleration > 0.5 ? '0 0 12px rgba(255, 193, 7, 0.8)' : // Yellow for accelerating
+                              vehicle.currentAcceleration < -0.5 ? '0 0 12px rgba(239, 68, 68, 0.8)' : // Red for decelerating
+                              mode === 'problem' ? '0 0 8px rgba(239, 68, 68, 0.8)' : // Bright red for problem mode
+                              '0 0 8px rgba(16, 185, 129, 0.8)' // Bright green for solution mode
                   }}
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.5 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {/* Intent signals - subtle glow effect */}
-                  {vehicle.intentSignal && (
+                  {/* Acceleration-based glow ring */}
+                  {Math.abs(vehicle.currentAcceleration) > 0.5 && (
                     <div
                       className="absolute -inset-1 rounded-full animate-pulse"
                       style={{
-                        backgroundColor: mode === 'problem' ? '#ef4444' : 
-                                       vehicle.intentSignal.type === 'emergency' ? '#ef4444' : 
-                                       vehicle.intentSignal.type === 'brake' ? '#f59e0b' : '#10b981',
-                        opacity: mode === 'problem' ? vehicle.intentSignal.strength * 0.4 : vehicle.intentSignal.strength * 0.3,
-                        filter: 'blur(2px)'
+                        backgroundColor: vehicle.currentAcceleration > 0.5 ? '#ffc107' : '#ef4444',
+                        opacity: 0.5,
+                        filter: 'blur(3px)'
                       }}
                     />
                   )}
