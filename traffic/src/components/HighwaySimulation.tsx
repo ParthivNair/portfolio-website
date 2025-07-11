@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import ParameterControls from './ParameterControls'
 
 interface Vehicle {
   id: string
@@ -25,6 +26,8 @@ interface Vehicle {
   laneChangeChance: number // Calculated based on mood level
   mentalLevel: number // 1 (keep cool easily) to 10 (lose cool quickly)
   timeStuckInTraffic: number // Time spent going slow, affects mood
+  lookaheadDistance: number // Distance to vehicle in front
+  brakingIntensity: number // 0 to 1, how close to threshold (for red glow)
 }
 
 interface SimulationState {
@@ -33,6 +36,38 @@ interface SimulationState {
   speed: number
   lanesClosed: boolean[]
   emergencyActive: boolean
+  
+  // Configurable Parameters
+  // Vehicle Behavior
+  maxVehicles: number
+  vehicleSpawnRate: number
+  simulationSpeed: number
+  
+  // Distance & Safety
+  lookaheadThreshold: number
+  safeFollowingDistance: number
+  criticalDistance: number
+  
+  // Driver Psychology
+  averageRelaxationLevel: number
+  mentalResilienceLevel: number
+  agitationGrowthRate: number
+  laneChangeAggression: number
+  
+  // Physics & Motion
+  baseAcceleration: number
+  truckAcceleration: number
+  speedVariation: number
+  
+  // Visual Effects
+  glowIntensity: number
+  brakingGlowMultiplier: number
+  
+  // Traffic Dynamics
+  cascadingBrakingEffect: number
+  emergencyResponseDistance: number
+  trafficJamThreshold: number
+  
   stats: {
     totalVehicles: number
     averageSpeed: number
@@ -60,6 +95,37 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
     speed: 1,
     lanesClosed: [false, false, false, false, false],
     emergencyActive: false,
+    
+    // Vehicle Behavior
+    maxVehicles: 25,
+    vehicleSpawnRate: 0.02,
+    simulationSpeed: 1.0,
+    
+    // Distance & Safety
+    lookaheadThreshold: 100,
+    safeFollowingDistance: 35,
+    criticalDistance: 20,
+    
+    // Driver Psychology
+    averageRelaxationLevel: 4.0,
+    mentalResilienceLevel: 3.0,
+    agitationGrowthRate: 0.5,
+    laneChangeAggression: 1.0,
+    
+    // Physics & Motion
+    baseAcceleration: 0.15,
+    truckAcceleration: 0.1,
+    speedVariation: 0.5,
+    
+    // Visual Effects
+    glowIntensity: 1.0,
+    brakingGlowMultiplier: 12,
+    
+    // Traffic Dynamics
+    cascadingBrakingEffect: 2.0,
+    emergencyResponseDistance: 100,
+    trafficJamThreshold: 3,
+    
     stats: {
       totalVehicles: 0,
       averageSpeed: 0,
@@ -71,32 +137,28 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
   const animationRef = useRef<number>()
   const lastTimeRef = useRef<number>(0)
 
-  // Generate mood level with distribution centered around 2-5 (majority of drivers)
-  const generateMoodLevel = (): number => {
+  // Generate mood level with distribution based on average relaxation level
+  const generateMoodLevel = (averageRelaxation: number): number => {
     const random = Math.random()
+    const baseLevel = Math.max(1, Math.min(10, averageRelaxation))
     
-    if (random < 0.7) {
-      // 70% of drivers are in the 2-5 range (normal drivers)
-      return Math.floor(Math.random() * 4) + 2 // 2, 3, 4, or 5
-    } else if (random < 0.9) {
-      // 20% are more agitated (6-8)
-      return Math.floor(Math.random() * 3) + 6 // 6, 7, or 8
-    } else if (random < 0.95) {
-      // 5% are very agitated (9-10)
-      return Math.floor(Math.random() * 2) + 9 // 9 or 10
-    } else {
-      // 5% are extremely relaxed right-lane cruisers (1)
-      return 1
-    }
+    // Create a normal distribution around the average relaxation level
+    const variation = (Math.random() - 0.5) * 4 // ±2 levels variation
+    const moodLevel = Math.max(1, Math.min(10, baseLevel + variation))
+    
+    return Math.round(moodLevel)
   }
 
-  // Generate mental level (patience/resilience) - exponentially more patient people
-  const generateMentalLevel = (): number => {
+  // Generate mental level (patience/resilience) based on mental resilience parameter
+  const generateMentalLevel = (mentalResilience: number): number => {
     const random = Math.random()
-    // Exponential distribution heavily favoring 1s (patient people)
-    // Using exponential formula to create more 1s than 10s
-    const mentalLevel = Math.min(10, Math.max(1, Math.floor(-Math.log(1 - random) * 1.5) + 1))
-    return mentalLevel
+    const baseLevel = Math.max(1, Math.min(10, mentalResilience))
+    
+    // Create variation around the base mental resilience level
+    const variation = (Math.random() - 0.5) * 3 // ±1.5 levels variation
+    const mentalLevel = Math.max(1, Math.min(10, baseLevel + variation))
+    
+    return Math.round(mentalLevel)
   }
 
   // Calculate lane change chance based on mood level (exponential growth)
@@ -149,16 +211,25 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
   }
 
   // Generate a new vehicle
-  const generateVehicle = useCallback((isEmergency = false, fromOnRamp = false): Vehicle => {
+  const generateVehicle = useCallback((isEmergency = false, fromOnRamp = false, state?: SimulationState): Vehicle => {
+    const currentState = state || {
+      averageRelaxationLevel: 4.0,
+      mentalResilienceLevel: 3.0,
+      speedVariation: 0.5,
+      baseAcceleration: 0.15,
+      truckAcceleration: 0.1,
+      laneChangeAggression: 1.0
+    } as SimulationState
+    
     const vehicleTypes = ['car', 'car', 'car', 'truck'] as const
     const type = isEmergency ? 'emergency' : vehicleTypes[Math.floor(Math.random() * vehicleTypes.length)]
     
     const colors = type === 'emergency' ? ['#ff0000'] : ['#ffffff']
     
     // Generate mood level, mental level, and lane change chance
-    const moodLevel = isEmergency ? 10 : generateMoodLevel() // Emergency vehicles are always agitated
-    const mentalLevel = isEmergency ? 10 : generateMentalLevel() // Emergency vehicles have no patience
-    const laneChangeChance = calculateLaneChangeChance(moodLevel)
+    const moodLevel = isEmergency ? 10 : generateMoodLevel(currentState.averageRelaxationLevel)
+    const mentalLevel = isEmergency ? 10 : generateMentalLevel(currentState.mentalResilienceLevel)
+    const laneChangeChance = calculateLaneChangeChance(moodLevel) * currentState.laneChangeAggression
     
     // Select lane based on mood and vehicle type
     const lane = selectLaneByMood(moodLevel, type, fromOnRamp)
@@ -180,9 +251,9 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
       maxSpeed = Math.max(laneMinSpeed, Math.min(laneMaxSpeed, baseMaxSpeed))
     }
     
-    // Small random variation within lane limits (not mood-based)
+    // Speed variation based on configuration
     if (!isEmergency) {
-      const variation = (Math.random() - 0.5) * 0.5 // ±0.25 speed variation
+      const variation = (Math.random() - 0.5) * currentState.speedVariation
       maxSpeed = Math.max(laneMinSpeed, Math.min(laneMaxSpeed, maxSpeed + variation))
     }
     
@@ -193,7 +264,7 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
       lane,
       speed: fromOnRamp ? 2 : maxSpeed * 0.8,
       maxSpeed,
-      acceleration: type === 'truck' ? 0.1 : 0.15,
+      acceleration: type === 'truck' ? currentState.truckAcceleration : currentState.baseAcceleration,
       currentAcceleration: 0,
       length: type === 'truck' ? 40 : type === 'emergency' ? 30 : 25,
       width: type === 'truck' ? 16 : 12,
@@ -206,7 +277,9 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
       moodLevel,
       laneChangeChance,
       mentalLevel,
-      timeStuckInTraffic: 0
+      timeStuckInTraffic: 0,
+      lookaheadDistance: Infinity, // Initially no vehicle ahead
+      brakingIntensity: 0 // Initially not braking
     }
   }, [generateMoodLevel, generateMentalLevel, calculateLaneChangeChance, selectLaneByMood])
 
@@ -227,6 +300,27 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           v.x - vehicle.x < 200
         )
         
+        // Calculate lookahead distance
+        if (vehicleAhead) {
+          vehicle.lookaheadDistance = vehicleAhead.x - vehicle.x - vehicle.length
+        } else {
+          vehicle.lookaheadDistance = Infinity
+        }
+        
+        // Calculate braking intensity based on how close we are to threshold
+        if (vehicle.lookaheadDistance < prevState.lookaheadThreshold) {
+          vehicle.brakingIntensity = Math.max(0, 1 - (vehicle.lookaheadDistance / prevState.lookaheadThreshold))
+          
+          // Increase agitation when approaching threshold
+          if (vehicle.brakingIntensity > 0.3) {
+            const agitationIncrease = vehicle.brakingIntensity * deltaTime * prevState.agitationGrowthRate
+            vehicle.moodLevel = Math.min(10, vehicle.moodLevel + agitationIncrease)
+            vehicle.laneChangeChance = calculateLaneChangeChance(vehicle.moodLevel) * prevState.laneChangeAggression
+          }
+        } else {
+          vehicle.brakingIntensity = 0
+        }
+        
         // Calculate desired speed based on mode and conditions
         let targetSpeed = vehicle.maxSpeed
         
@@ -239,8 +333,8 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
         // Realistic collision avoidance (for problem mode)
         if (mode === 'problem' && vehicleAhead) {
           const distance = vehicleAhead.x - vehicle.x
-          const safeDistance = 35 + (vehicle.speed * 6) // Dynamic safe distance based on speed
-          const criticalDistance = 20 + (vehicle.speed * 2) // Critical collision distance
+          const safeDistance = prevState.safeFollowingDistance + (vehicle.speed * 6) // Dynamic safe distance based on speed
+          const criticalDistance = prevState.criticalDistance + (vehicle.speed * 2) // Critical collision distance
           
           if (distance < criticalDistance) {
             // About to collide - try to change lanes or emergency brake
@@ -304,7 +398,7 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           // Emergency vehicle causes chaos - individual reactions
           if (prevState.emergencyActive && !vehicle.isEmergency) {
             const emergencyVehicle = newVehicles.find(v => v.isEmergency)
-            if (emergencyVehicle && Math.abs(emergencyVehicle.x - vehicle.x) < 100) {
+            if (emergencyVehicle && Math.abs(emergencyVehicle.x - vehicle.x) < prevState.emergencyResponseDistance) {
               // Random panic reactions - try to get out of the way
               if (Math.random() < 0.5) {
                 targetSpeed = Math.max(0, targetSpeed - 3)
@@ -327,8 +421,8 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           
           // Rush hour creates phantom jams - late braking
           const vehiclesInLane = newVehicles.filter(v => v.lane === vehicle.lane && v.x > vehicle.x - 200 && v.x < vehicle.x + 200)
-          if (vehiclesInLane.length > 3) {
-            targetSpeed = Math.max(0, targetSpeed - 1)
+          if (vehiclesInLane.length > prevState.trafficJamThreshold) {
+            targetSpeed = Math.max(0, targetSpeed - prevState.cascadingBrakingEffect)
           }
           
           // Aggressive drivers try to overtake by changing lanes (based on mood)
@@ -363,7 +457,7 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           // Coordinated emergency response - immediate corridor creation
           if (prevState.emergencyActive && !vehicle.isEmergency) {
             const emergencyVehicle = newVehicles.find(v => v.isEmergency)
-            if (emergencyVehicle && Math.abs(emergencyVehicle.x - vehicle.x) < 300) {
+            if (emergencyVehicle && Math.abs(emergencyVehicle.x - vehicle.x) < prevState.emergencyResponseDistance * 2) {
               // Clear path immediately and coordinate with nearby vehicles
               if (vehicle.lane === emergencyVehicle.lane || 
                   Math.abs(vehicle.lane - emergencyVehicle.lane) === 1) {
@@ -471,13 +565,13 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           
           // Increase mood (agitation) based on mental level and time stuck
           if (vehicle.timeStuckInTraffic > 2) { // After 2 seconds of slow traffic
-            const agitationIncrease = (vehicle.mentalLevel / 10) * deltaTime * 0.5
+            const agitationIncrease = (vehicle.mentalLevel / 10) * deltaTime * prevState.agitationGrowthRate
             const newMood = Math.min(10, vehicle.moodLevel + agitationIncrease)
             
             if (Math.floor(newMood) > Math.floor(vehicle.moodLevel)) {
               // Mood level increased, recalculate lane change chance
               vehicle.moodLevel = newMood
-              vehicle.laneChangeChance = calculateLaneChangeChance(vehicle.moodLevel)
+              vehicle.laneChangeChance = calculateLaneChangeChance(vehicle.moodLevel) * prevState.laneChangeAggression
             }
           }
         } else {
@@ -486,7 +580,7 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
         }
         
         // Update position
-        vehicle.x += vehicle.speed * deltaTime * 60 * prevState.speed
+        vehicle.x += vehicle.speed * deltaTime * 60 * prevState.simulationSpeed
         
         // Clear intent signals
         if (vehicle.intentSignal) {
@@ -530,12 +624,12 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
         updateVehicles(deltaTime)
         
         // Spawn new vehicles (with limit for performance)
-        if (Math.random() < 0.02) {
+        if (Math.random() < state.vehicleSpawnRate) {
           setState(prev => {
-            if (prev.vehicles.length < MAX_VEHICLES) {
+            if (prev.vehicles.length < prev.maxVehicles) {
               return {
                 ...prev,
-                vehicles: [...prev.vehicles, generateVehicle()]
+                vehicles: [...prev.vehicles, generateVehicle(false, false, prev)]
               }
             }
             return prev
@@ -574,16 +668,18 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
 
   const triggerRushHour = () => {
     // Add multiple vehicles quickly
-    const newVehicles: Vehicle[] = []
-    for (let i = 0; i < 8; i++) {
-      const vehicle = generateVehicle()
-      vehicle.x = -50 - (i * 80)
-      newVehicles.push(vehicle)
-    }
-    setState(prev => ({
-      ...prev,
-      vehicles: [...prev.vehicles, ...newVehicles]
-    }))
+    setState(prev => {
+      const newVehicles: Vehicle[] = []
+      for (let i = 0; i < 8; i++) {
+        const vehicle = generateVehicle(false, false, prev)
+        vehicle.x = -50 - (i * 80)
+        newVehicles.push(vehicle)
+      }
+      return {
+        ...prev,
+        vehicles: [...prev.vehicles, ...newVehicles]
+      }
+    })
   }
 
   const closeLane = (laneIndex: number) => {
@@ -596,20 +692,22 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
   const addOnRampVehicle = () => {
     setState(prev => ({
       ...prev,
-      vehicles: [...prev.vehicles, generateVehicle(false, true)]
+      vehicles: [...prev.vehicles, generateVehicle(false, true, prev)]
     }))
   }
 
   const addEmergencyVehicle = () => {
-    const emergencyVehicle = generateVehicle(true)
-    emergencyVehicle.x = -200
-    emergencyVehicle.lane = Math.floor(Math.random() * LANE_COUNT)
-    
-    setState(prev => ({
-      ...prev,
-      vehicles: [...prev.vehicles, emergencyVehicle],
-      emergencyActive: true
-    }))
+    setState(prev => {
+      const emergencyVehicle = generateVehicle(true, false, prev)
+      emergencyVehicle.x = -200
+      emergencyVehicle.lane = Math.floor(Math.random() * LANE_COUNT)
+      
+      return {
+        ...prev,
+        vehicles: [...prev.vehicles, emergencyVehicle],
+        emergencyActive: true
+      }
+    })
     
     // Clear emergency after some time
     setTimeout(() => {
@@ -617,8 +715,47 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
     }, 10000)
   }
 
+  // Handle parameter changes from ParameterControls
+  const handleParameterChange = (params: any) => {
+    setState(prev => ({
+      ...prev,
+      // Vehicle Behavior
+      maxVehicles: params.maxVehicles ?? prev.maxVehicles,
+      vehicleSpawnRate: params.vehicleSpawnRate ?? prev.vehicleSpawnRate,
+      simulationSpeed: params.simulationSpeed ?? prev.simulationSpeed,
+      
+      // Distance & Safety
+      lookaheadThreshold: params.lookaheadThreshold ?? prev.lookaheadThreshold,
+      safeFollowingDistance: params.safeFollowingDistance ?? prev.safeFollowingDistance,
+      criticalDistance: params.criticalDistance ?? prev.criticalDistance,
+      
+      // Driver Psychology
+      averageRelaxationLevel: params.averageRelaxationLevel ?? prev.averageRelaxationLevel,
+      mentalResilienceLevel: params.mentalResilienceLevel ?? prev.mentalResilienceLevel,
+      agitationGrowthRate: params.agitationGrowthRate ?? prev.agitationGrowthRate,
+      laneChangeAggression: params.laneChangeAggression ?? prev.laneChangeAggression,
+      
+      // Physics & Motion
+      baseAcceleration: params.baseAcceleration ?? prev.baseAcceleration,
+      truckAcceleration: params.truckAcceleration ?? prev.truckAcceleration,
+      speedVariation: params.speedVariation ?? prev.speedVariation,
+      
+      // Visual Effects
+      glowIntensity: params.glowIntensity ?? prev.glowIntensity,
+      brakingGlowMultiplier: params.brakingGlowMultiplier ?? prev.brakingGlowMultiplier,
+      
+      // Traffic Dynamics
+      cascadingBrakingEffect: params.cascadingBrakingEffect ?? prev.cascadingBrakingEffect,
+      emergencyResponseDistance: params.emergencyResponseDistance ?? prev.emergencyResponseDistance,
+      trafficJamThreshold: params.trafficJamThreshold ?? prev.trafficJamThreshold
+    }))
+  }
+
   return (
     <div className="w-full space-y-6">
+      {/* Parameter Controls */}
+      <ParameterControls onParamsChange={handleParameterChange} />
+      
       {/* Highway Canvas */}
       <div className="glow-card p-6">
         <div className="relative bg-gradient-to-b from-gray-900 to-gray-800 rounded-lg overflow-hidden mx-auto border border-gray-700">
@@ -682,17 +819,34 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
                     left: vehicle.x,
                     top: vehicle.y - (vehicle.isEmergency ? 6 : 4),
                     opacity: 1,
-                    boxShadow: vehicle.isEmergency ? '0 0 16px rgba(239, 68, 68, 0.8)' : 
-                              vehicle.currentAcceleration > 0.5 ? '0 0 12px rgba(255, 193, 7, 0.8)' : // Yellow for accelerating
-                              vehicle.currentAcceleration < -0.5 ? '0 0 12px rgba(239, 68, 68, 0.8)' : // Red for decelerating
-                              mode === 'problem' ? '0 0 8px rgba(239, 68, 68, 0.8)' : // Bright red for problem mode
-                              '0 0 8px rgba(16, 185, 129, 0.8)' // Bright green for solution mode
+                    boxShadow: vehicle.isEmergency ? `0 0 ${16 * state.glowIntensity}px rgba(239, 68, 68, 0.8)` : 
+                              vehicle.brakingIntensity > 0 ? `0 0 ${(8 + vehicle.brakingIntensity * state.brakingGlowMultiplier) * state.glowIntensity}px rgba(239, 68, 68, ${0.6 + vehicle.brakingIntensity * 0.4})` : // Red glow based on braking intensity
+                              vehicle.currentAcceleration > 0.5 ? `0 0 ${12 * state.glowIntensity}px rgba(255, 193, 7, 0.8)` : // Yellow for accelerating
+                              vehicle.currentAcceleration < -0.5 ? `0 0 ${12 * state.glowIntensity}px rgba(239, 68, 68, 0.8)` : // Red for decelerating
+                              mode === 'problem' ? `0 0 ${8 * state.glowIntensity}px rgba(239, 68, 68, 0.8)` : // Bright red for problem mode
+                              `0 0 ${8 * state.glowIntensity}px rgba(16, 185, 129, 0.8)` // Bright green for solution mode
                   }}
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.5 }}
                   transition={{ duration: 0.2 }}
                 >
+                  {/* Braking intensity glow ring */}
+                  {vehicle.brakingIntensity > 0 && (
+                    <div
+                      className="absolute -inset-2 rounded-full animate-pulse"
+                      style={{
+                        backgroundColor: '#ef4444',
+                        opacity: 0.4 + vehicle.brakingIntensity * 0.4,
+                        filter: `blur(${2 + vehicle.brakingIntensity * 4}px)`,
+                        width: `${100 + vehicle.brakingIntensity * 50}%`,
+                        height: `${100 + vehicle.brakingIntensity * 50}%`,
+                        left: `${-vehicle.brakingIntensity * 25}%`,
+                        top: `${-vehicle.brakingIntensity * 25}%`
+                      }}
+                    />
+                  )}
+                  
                   {/* Acceleration-based glow ring */}
                   {Math.abs(vehicle.currentAcceleration) > 0.5 && (
                     <div
