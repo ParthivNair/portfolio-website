@@ -554,7 +554,7 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [state.isRunning, updateVehicles, generateVehicle])
+  }, [state.isRunning])
 
   // Control functions
   const toggleSimulation = () => {
