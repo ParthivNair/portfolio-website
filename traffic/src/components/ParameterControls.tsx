@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+
 
 interface SimulationParams {
   // Vehicle Behavior
@@ -36,130 +36,30 @@ interface SimulationParams {
 
 interface ParameterControlsProps {
   onParamsChange: (params: Partial<SimulationParams>) => void
+  currentParams: SimulationParams
 }
 
-export default function ParameterControls({ onParamsChange }: ParameterControlsProps) {
-  
-  // Vehicle Behavior
-  const [maxVehicles, setMaxVehicles] = useState(25)
-  const [vehicleSpawnRate, setVehicleSpawnRate] = useState(0.02)
-  const [simulationSpeed, setSimulationSpeed] = useState(1.0)
-  
-  // Distance & Safety
-  const [lookaheadThreshold, setLookaheadThreshold] = useState(100)
-  const [safeFollowingDistance, setSafeFollowingDistance] = useState(35)
-  const [criticalDistance, setCriticalDistance] = useState(20)
-  
-  // Driver Psychology
-  const [averageRelaxationLevel, setAverageRelaxationLevel] = useState(4.0)
-  const [mentalResilienceLevel, setMentalResilienceLevel] = useState(3.0)
-  const [agitationGrowthRate, setAgitationGrowthRate] = useState(0.5)
-  const [laneChangeAggression, setLaneChangeAggression] = useState(1.0)
-  
-  // Physics & Motion
-  const [baseAcceleration, setBaseAcceleration] = useState(0.15)
-  const [truckAcceleration, setTruckAcceleration] = useState(0.1)
-  const [speedVariation, setSpeedVariation] = useState(0.5)
-  
-  // Visual Effects
-  const [glowIntensity, setGlowIntensity] = useState(1.0)
-  const [brakingGlowMultiplier, setBrakingGlowMultiplier] = useState(12)
-  
-  // Traffic Dynamics
-  const [cascadingBrakingEffect, setCascadingBrakingEffect] = useState(2.0)
-  const [emergencyResponseDistance, setEmergencyResponseDistance] = useState(100)
-  const [trafficJamThreshold, setTrafficJamThreshold] = useState(3)
+export default function ParameterControls({ onParamsChange, currentParams }: ParameterControlsProps) {
 
-  // Handler functions
-  const handleMaxVehiclesChange = (value: number) => {
-    setMaxVehicles(value)
-    onParamsChange({ maxVehicles: value })
-  }
-
-  const handleVehicleSpawnRateChange = (value: number) => {
-    setVehicleSpawnRate(value)
-    onParamsChange({ vehicleSpawnRate: value })
-  }
-
-  const handleSimulationSpeedChange = (value: number) => {
-    setSimulationSpeed(value)
-    onParamsChange({ simulationSpeed: value })
-  }
-
-  const handleLookaheadThresholdChange = (value: number) => {
-    setLookaheadThreshold(value)
-    onParamsChange({ lookaheadThreshold: value })
-  }
-
-  const handleSafeFollowingDistanceChange = (value: number) => {
-    setSafeFollowingDistance(value)
-    onParamsChange({ safeFollowingDistance: value })
-  }
-
-  const handleCriticalDistanceChange = (value: number) => {
-    setCriticalDistance(value)
-    onParamsChange({ criticalDistance: value })
-  }
-
-  const handleAverageRelaxationLevelChange = (value: number) => {
-    setAverageRelaxationLevel(value)
-    onParamsChange({ averageRelaxationLevel: value })
-  }
-
-  const handleMentalResilienceLevelChange = (value: number) => {
-    setMentalResilienceLevel(value)
-    onParamsChange({ mentalResilienceLevel: value })
-  }
-
-  const handleAgitationGrowthRateChange = (value: number) => {
-    setAgitationGrowthRate(value)
-    onParamsChange({ agitationGrowthRate: value })
-  }
-
-  const handleLaneChangeAggressionChange = (value: number) => {
-    setLaneChangeAggression(value)
-    onParamsChange({ laneChangeAggression: value })
-  }
-
-  const handleBaseAccelerationChange = (value: number) => {
-    setBaseAcceleration(value)
-    onParamsChange({ baseAcceleration: value })
-  }
-
-  const handleTruckAccelerationChange = (value: number) => {
-    setTruckAcceleration(value)
-    onParamsChange({ truckAcceleration: value })
-  }
-
-  const handleSpeedVariationChange = (value: number) => {
-    setSpeedVariation(value)
-    onParamsChange({ speedVariation: value })
-  }
-
-  const handleGlowIntensityChange = (value: number) => {
-    setGlowIntensity(value)
-    onParamsChange({ glowIntensity: value })
-  }
-
-  const handleBrakingGlowMultiplierChange = (value: number) => {
-    setBrakingGlowMultiplier(value)
-    onParamsChange({ brakingGlowMultiplier: value })
-  }
-
-  const handleCascadingBrakingEffectChange = (value: number) => {
-    setCascadingBrakingEffect(value)
-    onParamsChange({ cascadingBrakingEffect: value })
-  }
-
-  const handleEmergencyResponseDistanceChange = (value: number) => {
-    setEmergencyResponseDistance(value)
-    onParamsChange({ emergencyResponseDistance: value })
-  }
-
-  const handleTrafficJamThresholdChange = (value: number) => {
-    setTrafficJamThreshold(value)
-    onParamsChange({ trafficJamThreshold: value })
-  }
+  // Handler functions - directly call onParamsChange, no local state needed
+  const handleMaxVehiclesChange = (value: number) => onParamsChange({ maxVehicles: value })
+  const handleVehicleSpawnRateChange = (value: number) => onParamsChange({ vehicleSpawnRate: value })
+  const handleSimulationSpeedChange = (value: number) => onParamsChange({ simulationSpeed: value })
+  const handleLookaheadThresholdChange = (value: number) => onParamsChange({ lookaheadThreshold: value })
+  const handleSafeFollowingDistanceChange = (value: number) => onParamsChange({ safeFollowingDistance: value })
+  const handleCriticalDistanceChange = (value: number) => onParamsChange({ criticalDistance: value })
+  const handleAverageRelaxationLevelChange = (value: number) => onParamsChange({ averageRelaxationLevel: value })
+  const handleMentalResilienceLevelChange = (value: number) => onParamsChange({ mentalResilienceLevel: value })
+  const handleAgitationGrowthRateChange = (value: number) => onParamsChange({ agitationGrowthRate: value })
+  const handleLaneChangeAggressionChange = (value: number) => onParamsChange({ laneChangeAggression: value })
+  const handleBaseAccelerationChange = (value: number) => onParamsChange({ baseAcceleration: value })
+  const handleTruckAccelerationChange = (value: number) => onParamsChange({ truckAcceleration: value })
+  const handleSpeedVariationChange = (value: number) => onParamsChange({ speedVariation: value })
+  const handleGlowIntensityChange = (value: number) => onParamsChange({ glowIntensity: value })
+  const handleBrakingGlowMultiplierChange = (value: number) => onParamsChange({ brakingGlowMultiplier: value })
+  const handleCascadingBrakingEffectChange = (value: number) => onParamsChange({ cascadingBrakingEffect: value })
+  const handleEmergencyResponseDistanceChange = (value: number) => onParamsChange({ emergencyResponseDistance: value })
+  const handleTrafficJamThresholdChange = (value: number) => onParamsChange({ trafficJamThreshold: value })
 
   return (
     <div style={{ 
@@ -187,14 +87,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
             <div style={{ display: 'grid', gap: '12px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Number of Cars: {maxVehicles}
+                  Number of Cars: {currentParams.maxVehicles}
                 </label>
                 <input
                   type="range"
                   min="10"
                   max="150"
                   step="5"
-                  value={maxVehicles}
+                  value={currentParams.maxVehicles}
                   onChange={(e) => handleMaxVehiclesChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -205,14 +105,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Spawn Rate: {(vehicleSpawnRate * 100).toFixed(1)}%
+                  Spawn Rate: {(currentParams.vehicleSpawnRate * 100).toFixed(1)}%
                 </label>
                 <input
                   type="range"
                   min="0.005"
                   max="0.1"
                   step="0.005"
-                  value={vehicleSpawnRate}
+                  value={currentParams.vehicleSpawnRate}
                   onChange={(e) => handleVehicleSpawnRateChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -223,14 +123,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Simulation Speed: {simulationSpeed.toFixed(1)}x
+                  Simulation Speed: {currentParams.simulationSpeed.toFixed(1)}x
                 </label>
                 <input
                   type="range"
                   min="0.1"
                   max="3.0"
                   step="0.1"
-                  value={simulationSpeed}
+                  value={currentParams.simulationSpeed}
                   onChange={(e) => handleSimulationSpeedChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -250,14 +150,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
             <div style={{ display: 'grid', gap: '12px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Lookahead Threshold: {lookaheadThreshold} units
+                  Lookahead Threshold: {currentParams.lookaheadThreshold} units
                 </label>
                 <input
                   type="range"
                   min="30"
                   max="200"
                   step="10"
-                  value={lookaheadThreshold}
+                  value={currentParams.lookaheadThreshold}
                   onChange={(e) => handleLookaheadThresholdChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -268,14 +168,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Safe Following Distance: {safeFollowingDistance} units
+                  Safe Following Distance: {currentParams.safeFollowingDistance} units
                 </label>
                 <input
                   type="range"
                   min="15"
                   max="80"
                   step="5"
-                  value={safeFollowingDistance}
+                  value={currentParams.safeFollowingDistance}
                   onChange={(e) => handleSafeFollowingDistanceChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -286,14 +186,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Critical Distance: {criticalDistance} units
+                  Critical Distance: {currentParams.criticalDistance} units
                 </label>
                 <input
                   type="range"
                   min="10"
                   max="50"
                   step="2"
-                  value={criticalDistance}
+                  value={currentParams.criticalDistance}
                   onChange={(e) => handleCriticalDistanceChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -313,14 +213,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
             <div style={{ display: 'grid', gap: '12px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Average Relaxation: {averageRelaxationLevel.toFixed(1)}/10
+                  Average Relaxation: {currentParams.averageRelaxationLevel.toFixed(1)}/10
                 </label>
                 <input
                   type="range"
                   min="1.0"
                   max="8.0"
                   step="0.5"
-                  value={averageRelaxationLevel}
+                  value={currentParams.averageRelaxationLevel}
                   onChange={(e) => handleAverageRelaxationLevelChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -331,14 +231,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Mental Resilience: {mentalResilienceLevel.toFixed(1)}/10
+                  Mental Resilience: {currentParams.mentalResilienceLevel.toFixed(1)}/10
                 </label>
                 <input
                   type="range"
                   min="1.0"
                   max="10.0"
                   step="0.5"
-                  value={mentalResilienceLevel}
+                  value={currentParams.mentalResilienceLevel}
                   onChange={(e) => handleMentalResilienceLevelChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -349,14 +249,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Agitation Growth: {agitationGrowthRate.toFixed(1)}x
+                  Agitation Growth: {currentParams.agitationGrowthRate.toFixed(1)}x
                 </label>
                 <input
                   type="range"
                   min="0.1"
                   max="2.0"
                   step="0.1"
-                  value={agitationGrowthRate}
+                  value={currentParams.agitationGrowthRate}
                   onChange={(e) => handleAgitationGrowthRateChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -367,14 +267,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Lane Change Aggression: {laneChangeAggression.toFixed(1)}x
+                  Lane Change Aggression: {currentParams.laneChangeAggression.toFixed(1)}x
                 </label>
                 <input
                   type="range"
                   min="0.2"
                   max="3.0"
                   step="0.1"
-                  value={laneChangeAggression}
+                  value={currentParams.laneChangeAggression}
                   onChange={(e) => handleLaneChangeAggressionChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -394,14 +294,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
             <div style={{ display: 'grid', gap: '12px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Car Acceleration: {baseAcceleration.toFixed(2)}
+                  Car Acceleration: {currentParams.baseAcceleration.toFixed(2)}
                 </label>
                 <input
                   type="range"
                   min="0.05"
                   max="0.3"
                   step="0.01"
-                  value={baseAcceleration}
+                  value={currentParams.baseAcceleration}
                   onChange={(e) => handleBaseAccelerationChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -412,14 +312,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Truck Acceleration: {truckAcceleration.toFixed(2)}
+                  Truck Acceleration: {currentParams.truckAcceleration.toFixed(2)}
                 </label>
                 <input
                   type="range"
                   min="0.03"
                   max="0.2"
                   step="0.01"
-                  value={truckAcceleration}
+                  value={currentParams.truckAcceleration}
                   onChange={(e) => handleTruckAccelerationChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -430,14 +330,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Speed Variation: ±{speedVariation.toFixed(1)}
+                  Speed Variation: ±{currentParams.speedVariation.toFixed(1)}
                 </label>
                 <input
                   type="range"
                   min="0.1"
                   max="1.5"
                   step="0.1"
-                  value={speedVariation}
+                  value={currentParams.speedVariation}
                   onChange={(e) => handleSpeedVariationChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -457,14 +357,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
             <div style={{ display: 'grid', gap: '12px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Base Glow Intensity: {glowIntensity.toFixed(1)}x
+                  Base Glow Intensity: {currentParams.glowIntensity.toFixed(1)}x
                 </label>
                 <input
                   type="range"
                   min="0.2"
                   max="2.0"
                   step="0.1"
-                  value={glowIntensity}
+                  value={currentParams.glowIntensity}
                   onChange={(e) => handleGlowIntensityChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -475,14 +375,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Braking Glow Multiplier: {brakingGlowMultiplier.toFixed(0)}px
+                  Braking Glow Multiplier: {currentParams.brakingGlowMultiplier.toFixed(0)}px
                 </label>
                 <input
                   type="range"
                   min="5"
                   max="25"
                   step="1"
-                  value={brakingGlowMultiplier}
+                  value={currentParams.brakingGlowMultiplier}
                   onChange={(e) => handleBrakingGlowMultiplierChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -502,14 +402,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
             <div style={{ display: 'grid', gap: '12px' }}>
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Cascading Braking: {cascadingBrakingEffect.toFixed(1)}x
+                  Cascading Braking: {currentParams.cascadingBrakingEffect.toFixed(1)}x
                 </label>
                 <input
                   type="range"
                   min="1.0"
                   max="4.0"
                   step="0.1"
-                  value={cascadingBrakingEffect}
+                  value={currentParams.cascadingBrakingEffect}
                   onChange={(e) => handleCascadingBrakingEffectChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -520,14 +420,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Emergency Response Distance: {emergencyResponseDistance} units
+                  Emergency Response Distance: {currentParams.emergencyResponseDistance} units
                 </label>
                 <input
                   type="range"
                   min="50"
                   max="300"
                   step="10"
-                  value={emergencyResponseDistance}
+                  value={currentParams.emergencyResponseDistance}
                   onChange={(e) => handleEmergencyResponseDistanceChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />
@@ -538,14 +438,14 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
 
               <div>
                 <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Traffic Jam Threshold: {trafficJamThreshold} vehicles
+                  Traffic Jam Threshold: {currentParams.trafficJamThreshold} vehicles
                 </label>
                 <input
                   type="range"
                   min="2"
                   max="8"
                   step="1"
-                  value={trafficJamThreshold}
+                  value={currentParams.trafficJamThreshold}
                   onChange={(e) => handleTrafficJamThresholdChange(Number(e.target.value))}
                   style={{ width: '100%' }}
                 />

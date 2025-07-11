@@ -874,7 +874,29 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
       </div>
       
       {/* Parameter Controls */}
-      <ParameterControls onParamsChange={handleParameterChange} />
+      <ParameterControls 
+        onParamsChange={handleParameterChange}
+        currentParams={{
+          maxVehicles: state.maxVehicles,
+          vehicleSpawnRate: state.vehicleSpawnRate,
+          simulationSpeed: state.simulationSpeed,
+          lookaheadThreshold: state.lookaheadThreshold,
+          safeFollowingDistance: state.safeFollowingDistance,
+          criticalDistance: state.criticalDistance,
+          averageRelaxationLevel: state.averageRelaxationLevel,
+          mentalResilienceLevel: state.mentalResilienceLevel,
+          agitationGrowthRate: state.agitationGrowthRate,
+          laneChangeAggression: state.laneChangeAggression,
+          baseAcceleration: state.baseAcceleration,
+          truckAcceleration: state.truckAcceleration,
+          speedVariation: state.speedVariation,
+          glowIntensity: state.glowIntensity,
+          brakingGlowMultiplier: state.brakingGlowMultiplier,
+          cascadingBrakingEffect: state.cascadingBrakingEffect,
+          emergencyResponseDistance: state.emergencyResponseDistance,
+          trafficJamThreshold: state.trafficJamThreshold
+        }}
+      />
     </div>
   )
 } 
