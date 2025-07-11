@@ -753,9 +753,6 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
 
   return (
     <div className="w-full space-y-6">
-      {/* Parameter Controls */}
-      <ParameterControls onParamsChange={handleParameterChange} />
-      
       {/* Highway Canvas */}
       <div className="glow-card p-6">
         <div className="relative bg-gradient-to-b from-gray-900 to-gray-800 rounded-lg overflow-hidden mx-auto border border-gray-700">
@@ -875,6 +872,9 @@ export default function HighwaySimulation({ mode }: HighwaySimulationProps) {
           </div>
         </div>
       </div>
+      
+      {/* Parameter Controls */}
+      <ParameterControls onParamsChange={handleParameterChange} />
     </div>
   )
 } 

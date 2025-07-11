@@ -39,7 +39,6 @@ interface ParameterControlsProps {
 }
 
 export default function ParameterControls({ onParamsChange }: ParameterControlsProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
   
   // Vehicle Behavior
   const [maxVehicles, setMaxVehicles] = useState(25)
@@ -175,23 +174,9 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
         <h3 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '16px' }}>
           🚗 Comprehensive Traffic Simulation Controls
         </h3>
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          style={{
-            background: '#ef4444',
-            color: 'white',
-            padding: '8px 16px',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
-          {isExpanded ? 'Hide' : 'Show'} Controls
-        </button>
       </div>
 
-      {isExpanded && (
-        <div style={{ display: 'grid', gap: '20px' }}>
+      <div style={{ display: 'grid', gap: '20px' }}>
           
           {/* Vehicle Behavior Section */}
           <div style={{ borderLeft: '4px solid #3b82f6', paddingLeft: '16px' }}>
@@ -584,9 +569,8 @@ export default function ParameterControls({ onParamsChange }: ParameterControlsP
             <div style={{ marginBottom: '4px' }}>• High cascading effect + many cars = phantom jams</div>
             <div style={{ marginBottom: '4px' }}>• Adjust glow intensity for better visibility</div>
             <div>• Try extreme values to see emergent behaviors!</div>
-          </div>
         </div>
-      )}
+      </div>
     </div>
   )
 } 
