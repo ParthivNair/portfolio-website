@@ -1,7 +1,5 @@
 'use client'
 
-
-
 interface SimulationParams {
   // Vehicle Behavior
   maxVehicles: number
@@ -39,27 +37,174 @@ interface ParameterControlsProps {
   currentParams: SimulationParams
 }
 
-export default function ParameterControls({ onParamsChange, currentParams }: ParameterControlsProps) {
+// Slider component with proper CSS styling
+function Slider({ 
+  min, 
+  max, 
+  step, 
+  value, 
+  onChange, 
+  label, 
+  description 
+}: {
+  min: string
+  max: string
+  step: string
+  value: number
+  onChange: (value: number) => void
+  label: string
+  description: string
+}) {
+  // Calculate the percentage for the filled track
+  const percentage = ((value - parseFloat(min)) / (parseFloat(max) - parseFloat(min))) * 100
 
-  // Handler functions - directly call onParamsChange, no local state needed
-  const handleMaxVehiclesChange = (value: number) => onParamsChange({ maxVehicles: value })
-  const handleVehicleSpawnRateChange = (value: number) => onParamsChange({ vehicleSpawnRate: value })
-  const handleSimulationSpeedChange = (value: number) => onParamsChange({ simulationSpeed: value })
-  const handleLookaheadThresholdChange = (value: number) => onParamsChange({ lookaheadThreshold: value })
-  const handleSafeFollowingDistanceChange = (value: number) => onParamsChange({ safeFollowingDistance: value })
-  const handleCriticalDistanceChange = (value: number) => onParamsChange({ criticalDistance: value })
-  const handleAverageRelaxationLevelChange = (value: number) => onParamsChange({ averageRelaxationLevel: value })
-  const handleMentalResilienceLevelChange = (value: number) => onParamsChange({ mentalResilienceLevel: value })
-  const handleAgitationGrowthRateChange = (value: number) => onParamsChange({ agitationGrowthRate: value })
-  const handleLaneChangeAggressionChange = (value: number) => onParamsChange({ laneChangeAggression: value })
-  const handleBaseAccelerationChange = (value: number) => onParamsChange({ baseAcceleration: value })
-  const handleTruckAccelerationChange = (value: number) => onParamsChange({ truckAcceleration: value })
-  const handleSpeedVariationChange = (value: number) => onParamsChange({ speedVariation: value })
-  const handleGlowIntensityChange = (value: number) => onParamsChange({ glowIntensity: value })
-  const handleBrakingGlowMultiplierChange = (value: number) => onParamsChange({ brakingGlowMultiplier: value })
-  const handleCascadingBrakingEffectChange = (value: number) => onParamsChange({ cascadingBrakingEffect: value })
-  const handleEmergencyResponseDistanceChange = (value: number) => onParamsChange({ emergencyResponseDistance: value })
-  const handleTrafficJamThresholdChange = (value: number) => onParamsChange({ trafficJamThreshold: value })
+  return (
+    <div style={{ marginBottom: '16px' }}>
+      <label style={{ 
+        display: 'block', 
+        marginBottom: '8px', 
+        fontSize: '14px', 
+        fontWeight: '500',
+        color: '#ffffff'
+      }}>
+        {label}
+      </label>
+      
+      <div style={{ position: 'relative', width: '100%' }}>
+        {/* Background track */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: 0,
+          right: 0,
+          height: '6px',
+          backgroundColor: '#374151',
+          borderRadius: '3px',
+          transform: 'translateY(-50%)',
+          zIndex: 1
+        }} />
+        
+        {/* Filled track */}
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: 0,
+          height: '6px',
+          backgroundColor: '#3b82f6',
+          borderRadius: '3px',
+          transform: 'translateY(-50%)',
+          width: `${percentage}%`,
+          zIndex: 2,
+          transition: 'width 0.1s ease'
+        }} />
+        
+        {/* Actual input */}
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(Number(e.target.value))}
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '20px',
+            background: 'transparent',
+            outline: 'none',
+            cursor: 'pointer',
+            zIndex: 3,
+            margin: 0,
+            padding: 0,
+            appearance: 'none',
+            WebkitAppearance: 'none'
+          }}
+          className="custom-slider"
+        />
+      </div>
+      
+      <div style={{ 
+        fontSize: '11px', 
+        color: '#9ca3af', 
+        marginTop: '6px',
+        lineHeight: '1.3'
+      }}>
+        {description}
+      </div>
+      
+      <style jsx>{`
+        .custom-slider::-webkit-slider-thumb {
+          appearance: none;
+          -webkit-appearance: none;
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          background: #3b82f6;
+          cursor: pointer;
+          border: 3px solid #ffffff;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+          transition: all 0.2s ease;
+          position: relative;
+          z-index: 10;
+        }
+        
+        .custom-slider::-webkit-slider-thumb:hover {
+          background: #2563eb;
+          transform: scale(1.15);
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .custom-slider::-webkit-slider-thumb:active {
+          transform: scale(1.05);
+          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.6);
+        }
+        
+        .custom-slider::-moz-range-thumb {
+          height: 20px;
+          width: 20px;
+          border-radius: 50%;
+          background: #3b82f6;
+          cursor: pointer;
+          border: 3px solid #ffffff;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+          transition: all 0.2s ease;
+          -moz-appearance: none;
+          appearance: none;
+        }
+        
+        .custom-slider::-moz-range-thumb:hover {
+          background: #2563eb;
+          transform: scale(1.15);
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .custom-slider::-moz-range-thumb:active {
+          transform: scale(1.05);
+          box-shadow: 0 2px 8px rgba(59, 130, 246, 0.6);
+        }
+        
+        .custom-slider::-moz-range-track {
+          background: transparent;
+          border: none;
+        }
+        
+        .custom-slider:focus {
+          outline: none;
+        }
+        
+        .custom-slider:focus::-webkit-slider-thumb {
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .custom-slider:focus::-moz-range-thumb {
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+      `}</style>
+    </div>
+  )
+}
+
+export default function ParameterControls({ onParamsChange, currentParams }: ParameterControlsProps) {
 
   return (
     <div style={{ 
@@ -85,59 +230,35 @@ export default function ParameterControls({ onParamsChange, currentParams }: Par
             </h4>
             
             <div style={{ display: 'grid', gap: '12px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Number of Cars: {currentParams.maxVehicles}
-                </label>
-                <input
-                  type="range"
-                  min="10"
-                  max="150"
-                  step="5"
-                  value={currentParams.maxVehicles}
-                  onChange={(e) => handleMaxVehiclesChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Maximum vehicles on road
-                </div>
-              </div>
+              <Slider
+                min="10"
+                max="150"
+                step="5"
+                value={currentParams.maxVehicles}
+                onChange={(value) => onParamsChange({ maxVehicles: value })}
+                label={`Number of Cars: ${currentParams.maxVehicles}`}
+                description="Maximum vehicles on road"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Spawn Rate: {(currentParams.vehicleSpawnRate * 100).toFixed(1)}%
-                </label>
-                <input
-                  type="range"
-                  min="0.005"
-                  max="0.1"
-                  step="0.005"
-                  value={currentParams.vehicleSpawnRate}
-                  onChange={(e) => handleVehicleSpawnRateChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  How often new vehicles appear
-                </div>
-              </div>
+              <Slider
+                min="0.005"
+                max="0.1"
+                step="0.005"
+                value={currentParams.vehicleSpawnRate}
+                onChange={(value) => onParamsChange({ vehicleSpawnRate: value })}
+                label={`Spawn Rate: ${(currentParams.vehicleSpawnRate * 100).toFixed(1)}%`}
+                description="How often new vehicles appear"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Simulation Speed: {currentParams.simulationSpeed.toFixed(1)}x
-                </label>
-                <input
-                  type="range"
-                  min="0.1"
-                  max="3.0"
-                  step="0.1"
-                  value={currentParams.simulationSpeed}
-                  onChange={(e) => handleSimulationSpeedChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Overall simulation speed multiplier
-                </div>
-              </div>
+              <Slider
+                min="0.1"
+                max="3.0"
+                step="0.1"
+                value={currentParams.simulationSpeed}
+                onChange={(value) => onParamsChange({ simulationSpeed: value })}
+                label={`Simulation Speed: ${currentParams.simulationSpeed.toFixed(1)}x`}
+                description="Overall simulation speed multiplier"
+              />
             </div>
           </div>
 
@@ -148,59 +269,35 @@ export default function ParameterControls({ onParamsChange, currentParams }: Par
             </h4>
             
             <div style={{ display: 'grid', gap: '12px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Lookahead Threshold: {currentParams.lookaheadThreshold} units
-                </label>
-                <input
-                  type="range"
-                  min="30"
-                  max="200"
-                  step="10"
-                  value={currentParams.lookaheadThreshold}
-                  onChange={(e) => handleLookaheadThresholdChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Distance for braking behavior and red glow
-                </div>
-              </div>
+              <Slider
+                min="30"
+                max="200"
+                step="10"
+                value={currentParams.lookaheadThreshold}
+                onChange={(value) => onParamsChange({ lookaheadThreshold: value })}
+                label={`Lookahead Threshold: ${currentParams.lookaheadThreshold} units`}
+                description="Distance for braking behavior and red glow"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Safe Following Distance: {currentParams.safeFollowingDistance} units
-                </label>
-                <input
-                  type="range"
-                  min="15"
-                  max="80"
-                  step="5"
-                  value={currentParams.safeFollowingDistance}
-                  onChange={(e) => handleSafeFollowingDistanceChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Minimum safe distance between vehicles
-                </div>
-              </div>
+              <Slider
+                min="15"
+                max="80"
+                step="5"
+                value={currentParams.safeFollowingDistance}
+                onChange={(value) => onParamsChange({ safeFollowingDistance: value })}
+                label={`Safe Following Distance: ${currentParams.safeFollowingDistance} units`}
+                description="Minimum safe distance between vehicles"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Critical Distance: {currentParams.criticalDistance} units
-                </label>
-                <input
-                  type="range"
-                  min="10"
-                  max="50"
-                  step="2"
-                  value={currentParams.criticalDistance}
-                  onChange={(e) => handleCriticalDistanceChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Emergency braking distance
-                </div>
-              </div>
+              <Slider
+                min="10"
+                max="50"
+                step="2"
+                value={currentParams.criticalDistance}
+                onChange={(value) => onParamsChange({ criticalDistance: value })}
+                label={`Critical Distance: ${currentParams.criticalDistance} units`}
+                description="Emergency braking distance"
+              />
             </div>
           </div>
 
@@ -211,77 +308,45 @@ export default function ParameterControls({ onParamsChange, currentParams }: Par
             </h4>
             
             <div style={{ display: 'grid', gap: '12px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Average Relaxation: {currentParams.averageRelaxationLevel.toFixed(1)}/10
-                </label>
-                <input
-                  type="range"
-                  min="1.0"
-                  max="8.0"
-                  step="0.5"
-                  value={currentParams.averageRelaxationLevel}
-                  onChange={(e) => handleAverageRelaxationLevelChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Base mood level for new drivers (lower = more relaxed)
-                </div>
-              </div>
+              <Slider
+                min="1.0"
+                max="8.0"
+                step="0.5"
+                value={currentParams.averageRelaxationLevel}
+                onChange={(value) => onParamsChange({ averageRelaxationLevel: value })}
+                label={`Average Relaxation: ${currentParams.averageRelaxationLevel.toFixed(1)}/10`}
+                description="Base mood level for new drivers (lower = more relaxed)"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Mental Resilience: {currentParams.mentalResilienceLevel.toFixed(1)}/10
-                </label>
-                <input
-                  type="range"
-                  min="1.0"
-                  max="10.0"
-                  step="0.5"
-                  value={currentParams.mentalResilienceLevel}
-                  onChange={(e) => handleMentalResilienceLevelChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  How well drivers handle traffic stress
-                </div>
-              </div>
+              <Slider
+                min="1.0"
+                max="10.0"
+                step="0.5"
+                value={currentParams.mentalResilienceLevel}
+                onChange={(value) => onParamsChange({ mentalResilienceLevel: value })}
+                label={`Mental Resilience: ${currentParams.mentalResilienceLevel.toFixed(1)}/10`}
+                description="How well drivers handle traffic stress"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Agitation Growth: {currentParams.agitationGrowthRate.toFixed(1)}x
-                </label>
-                <input
-                  type="range"
-                  min="0.1"
-                  max="2.0"
-                  step="0.1"
-                  value={currentParams.agitationGrowthRate}
-                  onChange={(e) => handleAgitationGrowthRateChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  How quickly drivers get frustrated
-                </div>
-              </div>
+              <Slider
+                min="0.1"
+                max="2.0"
+                step="0.1"
+                value={currentParams.agitationGrowthRate}
+                onChange={(value) => onParamsChange({ agitationGrowthRate: value })}
+                label={`Agitation Growth: ${currentParams.agitationGrowthRate.toFixed(1)}x`}
+                description="How quickly drivers get frustrated"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Lane Change Aggression: {currentParams.laneChangeAggression.toFixed(1)}x
-                </label>
-                <input
-                  type="range"
-                  min="0.2"
-                  max="3.0"
-                  step="0.1"
-                  value={currentParams.laneChangeAggression}
-                  onChange={(e) => handleLaneChangeAggressionChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Multiplier for lane change frequency
-                </div>
-              </div>
+              <Slider
+                min="0.2"
+                max="3.0"
+                step="0.1"
+                value={currentParams.laneChangeAggression}
+                onChange={(value) => onParamsChange({ laneChangeAggression: value })}
+                label={`Lane Change Aggression: ${currentParams.laneChangeAggression.toFixed(1)}x`}
+                description="Multiplier for lane change frequency"
+              />
             </div>
           </div>
 
@@ -292,59 +357,35 @@ export default function ParameterControls({ onParamsChange, currentParams }: Par
             </h4>
             
             <div style={{ display: 'grid', gap: '12px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Car Acceleration: {currentParams.baseAcceleration.toFixed(2)}
-                </label>
-                <input
-                  type="range"
-                  min="0.05"
-                  max="0.3"
-                  step="0.01"
-                  value={currentParams.baseAcceleration}
-                  onChange={(e) => handleBaseAccelerationChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  How quickly cars accelerate/decelerate
-                </div>
-              </div>
+              <Slider
+                min="0.05"
+                max="0.3"
+                step="0.01"
+                value={currentParams.baseAcceleration}
+                onChange={(value) => onParamsChange({ baseAcceleration: value })}
+                label={`Car Acceleration: ${currentParams.baseAcceleration.toFixed(2)}`}
+                description="How quickly cars accelerate/decelerate"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Truck Acceleration: {currentParams.truckAcceleration.toFixed(2)}
-                </label>
-                <input
-                  type="range"
-                  min="0.03"
-                  max="0.2"
-                  step="0.01"
-                  value={currentParams.truckAcceleration}
-                  onChange={(e) => handleTruckAccelerationChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  How quickly trucks accelerate/decelerate
-                </div>
-              </div>
+              <Slider
+                min="0.03"
+                max="0.2"
+                step="0.01"
+                value={currentParams.truckAcceleration}
+                onChange={(value) => onParamsChange({ truckAcceleration: value })}
+                label={`Truck Acceleration: ${currentParams.truckAcceleration.toFixed(2)}`}
+                description="How quickly trucks accelerate/decelerate"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Speed Variation: ±{currentParams.speedVariation.toFixed(1)}
-                </label>
-                <input
-                  type="range"
-                  min="0.1"
-                  max="1.5"
-                  step="0.1"
-                  value={currentParams.speedVariation}
-                  onChange={(e) => handleSpeedVariationChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Random speed variation between vehicles
-                </div>
-              </div>
+              <Slider
+                min="0.1"
+                max="1.5"
+                step="0.1"
+                value={currentParams.speedVariation}
+                onChange={(value) => onParamsChange({ speedVariation: value })}
+                label={`Speed Variation: ±${currentParams.speedVariation.toFixed(1)}`}
+                description="Random speed variation between vehicles"
+              />
             </div>
           </div>
 
@@ -355,41 +396,25 @@ export default function ParameterControls({ onParamsChange, currentParams }: Par
             </h4>
             
             <div style={{ display: 'grid', gap: '12px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Base Glow Intensity: {currentParams.glowIntensity.toFixed(1)}x
-                </label>
-                <input
-                  type="range"
-                  min="0.2"
-                  max="2.0"
-                  step="0.1"
-                  value={currentParams.glowIntensity}
-                  onChange={(e) => handleGlowIntensityChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Overall glow effect intensity
-                </div>
-              </div>
+              <Slider
+                min="0.2"
+                max="2.0"
+                step="0.1"
+                value={currentParams.glowIntensity}
+                onChange={(value) => onParamsChange({ glowIntensity: value })}
+                label={`Base Glow Intensity: ${currentParams.glowIntensity.toFixed(1)}x`}
+                description="Overall glow effect intensity"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Braking Glow Multiplier: {currentParams.brakingGlowMultiplier.toFixed(0)}px
-                </label>
-                <input
-                  type="range"
-                  min="5"
-                  max="25"
-                  step="1"
-                  value={currentParams.brakingGlowMultiplier}
-                  onChange={(e) => handleBrakingGlowMultiplierChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Extra glow size when braking
-                </div>
-              </div>
+              <Slider
+                min="5"
+                max="25"
+                step="1"
+                value={currentParams.brakingGlowMultiplier}
+                onChange={(value) => onParamsChange({ brakingGlowMultiplier: value })}
+                label={`Braking Glow Multiplier: ${currentParams.brakingGlowMultiplier.toFixed(0)}px`}
+                description="Extra glow size when braking"
+              />
             </div>
           </div>
 
@@ -400,59 +425,35 @@ export default function ParameterControls({ onParamsChange, currentParams }: Par
             </h4>
             
             <div style={{ display: 'grid', gap: '12px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Cascading Braking: {currentParams.cascadingBrakingEffect.toFixed(1)}x
-                </label>
-                <input
-                  type="range"
-                  min="1.0"
-                  max="4.0"
-                  step="0.1"
-                  value={currentParams.cascadingBrakingEffect}
-                  onChange={(e) => handleCascadingBrakingEffectChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  How much braking spreads through traffic
-                </div>
-              </div>
+              <Slider
+                min="1.0"
+                max="4.0"
+                step="0.1"
+                value={currentParams.cascadingBrakingEffect}
+                onChange={(value) => onParamsChange({ cascadingBrakingEffect: value })}
+                label={`Cascading Braking: ${currentParams.cascadingBrakingEffect.toFixed(1)}x`}
+                description="How much braking spreads through traffic"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Emergency Response Distance: {currentParams.emergencyResponseDistance} units
-                </label>
-                <input
-                  type="range"
-                  min="50"
-                  max="300"
-                  step="10"
-                  value={currentParams.emergencyResponseDistance}
-                  onChange={(e) => handleEmergencyResponseDistanceChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Distance vehicles react to emergency vehicles
-                </div>
-              </div>
+              <Slider
+                min="50"
+                max="300"
+                step="10"
+                value={currentParams.emergencyResponseDistance}
+                onChange={(value) => onParamsChange({ emergencyResponseDistance: value })}
+                label={`Emergency Response Distance: ${currentParams.emergencyResponseDistance} units`}
+                description="Distance vehicles react to emergency vehicles"
+              />
 
-              <div>
-                <label style={{ display: 'block', marginBottom: '6px', fontSize: '14px' }}>
-                  Traffic Jam Threshold: {currentParams.trafficJamThreshold} vehicles
-                </label>
-                <input
-                  type="range"
-                  min="2"
-                  max="8"
-                  step="1"
-                  value={currentParams.trafficJamThreshold}
-                  onChange={(e) => handleTrafficJamThresholdChange(Number(e.target.value))}
-                  style={{ width: '100%' }}
-                />
-                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>
-                  Vehicles needed to trigger phantom jams
-                </div>
-              </div>
+              <Slider
+                min="2"
+                max="8"
+                step="1"
+                value={currentParams.trafficJamThreshold}
+                onChange={(value) => onParamsChange({ trafficJamThreshold: value })}
+                label={`Traffic Jam Threshold: ${currentParams.trafficJamThreshold} vehicles`}
+                description="Vehicles needed to trigger phantom jams"
+              />
             </div>
           </div>
 
